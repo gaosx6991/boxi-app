@@ -7,9 +7,16 @@ import {
   View,
 } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import PrimaryButton from '../../../components/PrimaryButton.tsx';
 
 export default () => {
-  const handleRegisterPress = useCallback(() => {}, []);
+  const navigation = useNavigation<NativeStackNavigatorProps>();
+
+  const handleRegisterPress = useCallback(() => {
+    navigation.navigate('Register');
+  }, [navigation]);
 
   const renderDropShadow = useCallback(() => {
     return (
@@ -57,9 +64,7 @@ export default () => {
       <View style={styles.container}>
         <Text style={styles.titleTxt}>Welcome to Boxi 👋 </Text>
 
-        <TouchableOpacity style={styles.emailLoginBtn} activeOpacity={0.7}>
-          <Text style={styles.emailLoginTxt}>Continue with Email</Text>
-        </TouchableOpacity>
+        <PrimaryButton text={'Continue with Email'} onPress={() => {}} />
 
         <TouchableOpacity
           style={styles.phoneNumberLoginBtn}
@@ -100,19 +105,6 @@ const styles = StyleSheet.create({
     color: '#000000',
     marginBottom: 26,
     marginLeft: 20,
-  },
-  emailLoginBtn: {
-    width: '100%',
-    height: 48,
-    borderRadius: 10,
-    backgroundColor: '#5B57BA',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16,
-  },
-  emailLoginTxt: {
-    fontSize: 16,
-    color: '#FFF',
   },
   phoneNumberLoginBtn: {
     width: '100%',
