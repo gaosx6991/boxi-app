@@ -2,38 +2,46 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import Input from '../../../components/Input.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {RootStackParamList} from '../../../types';
 import {
-  validateAccountName,
   validateEmail,
   validatePassword,
+  validatePhoneNumber,
 } from '../../../utils/validate.ts';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
 };
 
+type LoginScreenRouteProp = RouteProp<RootStackParamList, 'Login'>;
+
 export default (props: Props) => {
-  const [accountName, setAccountName] = useState<string>('');
+  const route = useRoute<LoginScreenRouteProp>();
+  const {type: loginType} = route.params;
+
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const [accountNameValid, setAccountNameValid] = useState<boolean>(true);
+  const [phoneNumberValid, setPhoneNumberValid] = useState<boolean>(true);
   const [emailValid, setEmailValid] = useState<boolean>(true);
   const [passwordValid, setPasswordValid] = useState<boolean>(true);
 
-  const [accountNameErrMsg, setAccountNameValidErrMsg] = useState<string>('');
+  const [phoneNumberValidErrMsg, setPhoneNumberValidErrMsg] =
+    useState<string>('');
   const [emailValidErrMsg, setEmailValidErrMsg] = useState<string>('');
   const [passwordValidErrMsg, setPasswordValidErrMsg] = useState<string>('');
 
-  const handleAccountNameValueChange = useCallback((value: string) => {
-    setAccountName(value);
+  const handlePhoneNumberValueChange = useCallback((value: string) => {
+    setPhoneNumber(value);
 
-    const errMsg = validateAccountName(value);
+    const errMsg = validatePhoneNumber(value);
     if (errMsg) {
-      setAccountNameValid(false);
-      setAccountNameValidErrMsg(errMsg);
+      setPhoneNumberValid(false);
+      setPhoneNumberValidErrMsg(errMsg);
     } else {
-      setAccountNameValid(true);
+      setPhoneNumberValid(true);
     }
   }, []);
   const handleEmailValueChange = useCallback((value: string) => {
@@ -60,13 +68,16 @@ export default (props: Props) => {
   }, []);
 
   const disabled = useMemo(
-    () => !accountNameValid || !emailValid || !passwordValid,
-    [accountNameValid, emailValid, passwordValid],
+    () =>
+      (loginType === 'Phone Number' && !phoneNumberValid) ||
+      (loginType === 'Email' && !emailValid) ||
+      !passwordValid,
+    [loginType, phoneNumberValid, emailValid, passwordValid],
   );
 
   useEffect(() => {
-    handleAccountNameValueChange(accountName);
-    handleEmailValueChange(email);
+    loginType === 'Phone Number' && handlePhoneNumberValueChange(phoneNumber);
+    loginType === 'Email' && handleEmailValueChange(email);
     handlePasswordValueChange(password);
   }, []);
 
@@ -74,23 +85,27 @@ export default (props: Props) => {
 
   return (
     <View style={[styles.root, props.styles]}>
-      <Input
-        type={'Account Name'}
-        title={'Account Name'}
-        value={accountName}
-        onValueChange={handleAccountNameValueChange}
-        valid={accountNameValid}
-        errMsg={accountNameErrMsg}
-      />
+      {loginType === 'Phone Number' && (
+        <Input
+          type={'Phone Number'}
+          title={'Phone Number'}
+          value={phoneNumber}
+          onValueChange={handlePhoneNumberValueChange}
+          valid={phoneNumberValid}
+          errMsg={phoneNumberValidErrMsg}
+        />
+      )}
 
-      <Input
-        type={'Email'}
-        title={'Email'}
-        value={email}
-        onValueChange={handleEmailValueChange}
-        valid={emailValid}
-        errMsg={emailValidErrMsg}
-      />
+      {loginType === 'Email' && (
+        <Input
+          type={'Email'}
+          title={'Email'}
+          value={email}
+          onValueChange={handleEmailValueChange}
+          valid={emailValid}
+          errMsg={emailValidErrMsg}
+        />
+      )}
 
       <Input
         type={'Password'}
@@ -102,7 +117,7 @@ export default (props: Props) => {
       />
 
       <PrimaryButton
-        text={'Create'}
+        text={'Login'}
         onPress={handlePress}
         styles={styles.createBtn}
         disabled={disabled}

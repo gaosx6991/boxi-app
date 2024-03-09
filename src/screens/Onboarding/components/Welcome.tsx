@@ -57,6 +57,14 @@ export default () => {
     }, 200);
   }, []);
 
+  const handleEmailLoginPress = useCallback(() => {
+    navigation.navigate('Login', {type: 'Email'});
+  }, [navigation]);
+
+  const handlePhoneNumberLoginPress = useCallback(() => {
+    navigation.navigate('Login', {type: 'Phone Number'});
+  }, [navigation]);
+
   return (
     <View style={[styles.root, rootStyle]}>
       {renderDropShadow()}
@@ -64,11 +72,15 @@ export default () => {
       <View style={styles.container}>
         <Text style={styles.titleTxt}>Welcome to Boxi 👋 </Text>
 
-        <PrimaryButton text={'Continue with Email'} onPress={() => {}} />
+        <PrimaryButton
+          text={'Continue with Email'}
+          onPress={handleEmailLoginPress}
+        />
 
         <TouchableOpacity
           style={styles.phoneNumberLoginBtn}
-          activeOpacity={0.7}>
+          activeOpacity={0.7}
+          onPress={handlePhoneNumberLoginPress}>
           <Text style={styles.phoneNumberLoginTxt}>
             Continue with Phone Number
           </Text>

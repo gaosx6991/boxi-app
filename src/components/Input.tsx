@@ -19,7 +19,7 @@ import visibility from '../assets/visibility.png';
 type Props = {
   styles?: StyleProp<ViewStyle>;
   title: string;
-  type: 'Account Name' | 'Email' | 'Password';
+  type: 'Account Name' | 'Email' | 'Password' | 'Phone Number';
   value: string;
   onValueChange: (value: string) => void;
   valid: boolean;
@@ -30,16 +30,8 @@ const icons = {
   'Account Name': [check],
   Email: [check],
   Password: [check, visibility],
+  'Phone Number': [check],
 };
-
-function maskPassword(password: string): string {
-  // 使用 Array.from 将字符串转换为字符数组
-  const charArray = Array.from(password);
-  // 使用 map 方法将每个字符替换为黑色实心原点
-  const maskedCharArray = charArray.map(() => '•');
-  // 使用 join 方法将字符数组转换回字符串
-  return maskedCharArray.join('');
-}
 
 export default (props: Props) => {
   const icon = useMemo(() => icons[props.type], [icons, props.type]);

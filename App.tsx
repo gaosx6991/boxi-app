@@ -4,8 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Onboarding from './src/screens/Onboarding/Onboarding.tsx';
 import Register from './src/screens/Register/Register.tsx';
+import Login from './src/screens/Login/Login.tsx';
+import type {RootStackParamList} from './src/types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
   return (
@@ -25,6 +27,11 @@ function App() {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{headerShown: false, animation: 'ios'}}
+        />
+        <Stack.Screen
+          name="Login"
+          component={Login}
           options={{headerShown: false, animation: 'ios'}}
         />
       </Stack.Navigator>
