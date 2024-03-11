@@ -2,13 +2,14 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import Input from '../../../components/Input.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
-import {RouteProp, useRoute} from '@react-navigation/native';
+import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {RootStackParamList} from '../../../types';
 import {
   validateEmail,
   validatePassword,
   validatePhoneNumber,
 } from '../../../utils/validate.ts';
+import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -81,7 +82,11 @@ export default (props: Props) => {
     handlePasswordValueChange(password);
   }, []);
 
-  const handlePress = useCallback(() => {}, []);
+  const navigation = useNavigation<NativeStackNavigatorProps>();
+
+  const handlePress = useCallback(() => {
+    navigation.navigate('BottomTabNavigator');
+  }, [navigation]);
 
   return (
     <View style={[styles.root, props.styles]}>
