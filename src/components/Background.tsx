@@ -2,6 +2,7 @@ import React, {PropsWithChildren} from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
+import FloatingNotification from './FloatingNotification.tsx';
 
 type Props = PropsWithChildren;
 
@@ -13,6 +14,12 @@ export default (props: Props) => (
     style={styles.root}>
     <View style={styles.circle}></View>
     {props.children}
+
+    <FloatingNotification
+      styles={styles.floatingNotification}
+      content={'Your package ready to pick up soon.'}
+      timestamp={'5:20 PM'}
+    />
   </LinearGradient>
 );
 
@@ -29,5 +36,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#5B57BA',
     top: -70,
     left: 262 / 2 + 70,
+  },
+  floatingNotification: {
+    position: 'absolute',
+    bottom: 0,
   },
 });
