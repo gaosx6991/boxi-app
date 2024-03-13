@@ -26,7 +26,7 @@ export default (props: Props) => {
     <View style={[styles.root, props.styles]}>
       <View style={styles.balance}>
         <Image source={balance} style={styles.img} />
-        <Text style={styles.amountTxt} ellipsizeMode={'tail'}>
+        <Text style={styles.amountTxt} ellipsizeMode={'tail'} numberOfLines={1}>
           ${formattedAmount}
         </Text>
         <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
