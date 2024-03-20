@@ -33,7 +33,7 @@ type ItemProps = {
   txt: string;
 };
 
-const itemTypes: ItemProps[] = [
+export const itemTypes: ItemProps[] = [
   {
     type: ITEM_TYPE.DOCUMENT,
     icon: file,

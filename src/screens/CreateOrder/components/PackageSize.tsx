@@ -7,26 +7,29 @@ import envelope from '../../../assets/envelope.png';
 import box from '../../../assets/box.png';
 // @ts-ignore
 import cargo from '../../../assets/cargo.png';
-import PackageSizeItem, {
-  PACKAGE_SIZE,
-  Props as ItemProps,
-} from './PackageSizeItem.tsx';
+import PackageSizeItem, {PACKAGE_SIZE} from './PackageSizeItem.tsx';
 
-const packageSizes: ItemProps[] = [
+export const packageSizes = [
   {
     size: PACKAGE_SIZE.ENVELOPE,
     icon: envelope,
     label: '< 1kg',
+    name: 'Envelope',
+    price: 20.23,
   },
   {
     size: PACKAGE_SIZE.BOX,
     icon: box,
     label: '3kg - 10kg',
+    name: 'Box',
+    price: 40.23,
   },
   {
     size: PACKAGE_SIZE.CARGO,
     icon: cargo,
     label: '> 10kg',
+    name: 'Cargo',
+    price: 60.23,
   },
 ];
 

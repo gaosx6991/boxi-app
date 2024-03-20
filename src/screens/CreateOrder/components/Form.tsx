@@ -8,10 +8,17 @@ import {
   validatePostalCode,
 } from '../../../utils/validate.ts';
 import {PACKAGE_SIZE} from './PackageSizeItem.tsx';
-import ItemType, {ITEM_TYPE} from './ItemType.tsx';
+import ItemType, {ITEM_TYPE, itemTypes} from './ItemType.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
 import {PAGE} from '../common.ts';
-import PackageSize from './PackageSize.tsx';
+import PackageSize, {packageSizes} from './PackageSize.tsx';
+import Info from './Info.tsx';
+// @ts-ignore
+import shipper from '../../../assets/shipper.png';
+// @ts-ignore
+import recipient from '../../../assets/recipient.png';
+import Line from './Line.tsx';
+import Price from './Price.tsx';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -31,6 +38,15 @@ export default (props: Props) => {
   const [recipientAddress, setRecipientAddress] = useState<string>('');
   const [postalZip, setPostalZip] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
+
+  const packageSizeInfo = useMemo(
+    () => packageSizes.filter(item => item.size === packageSize)[0],
+    [packageSize, packageSizes],
+  );
+  const itemTypeInfo = useMemo(
+    () => itemTypes.filter(item => item.type === itemType)[0],
+    [itemType, itemTypes],
+  );
 
   const [senderNameValid, setSenderNameValid] = useState<boolean>(true);
   const [senderAddressValid, setSenderAddressValid] = useState<boolean>(true);
@@ -180,6 +196,8 @@ export default (props: Props) => {
     }
   }, [props.page]);
 
+  const handlePress = useCallback(() => {}, []);
+
   return (
     <View style={[styles.root, props.styles]}>
       {props.page === PAGE.SHIPMENT_FORM && (
@@ -274,12 +292,58 @@ export default (props: Props) => {
         />
       )}
 
-      <PrimaryButton
-        onPress={props.onFlip}
-        styles={styles.primaryButton}
-        disabled={disabled}
-        text={'Next'}
-      />
+      {props.page === PAGE.REVIEW_ORDER && (
+        <Info
+          icon={shipper}
+          title={'Shipper'}
+          header={senderName}
+          subHeader={shipperPhoneNumber}
+          detail={senderAddress}
+        />
+      )}
+
+      {props.page === PAGE.REVIEW_ORDER && (
+        <Info
+          icon={recipient}
+          title={'Recipient'}
+          header={recipientName}
+          subHeader={phoneNumber}
+          detail={`${recipientAddress},${postalZip}`}
+        />
+      )}
+
+      {props.page === PAGE.REVIEW_ORDER && (
+        <Info
+          icon={packageSizeInfo['icon']}
+          title={'Package Information'}
+          header={`${packageSizeInfo.name} ${packageSizeInfo.label}`}
+          detail={itemTypeInfo.txt}
+        />
+      )}
+
+      {props.page !== PAGE.REVIEW_ORDER && (
+        <PrimaryButton
+          onPress={props.onFlip}
+          styles={styles.primaryButton}
+          disabled={disabled}
+          text={'Next'}
+        />
+      )}
+
+      {props.page === PAGE.REVIEW_ORDER && <Line />}
+
+      {props.page === PAGE.REVIEW_ORDER && (
+        <Price boxiRegularPrice={packageSizeInfo.price} />
+      )}
+
+      {props.page === PAGE.REVIEW_ORDER && (
+        <PrimaryButton
+          onPress={handlePress}
+          styles={styles.primaryButton}
+          disabled={disabled}
+          text={'Create Order'}
+        />
+      )}
     </View>
   );
 };
