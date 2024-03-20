@@ -71,3 +71,47 @@ export function validateAccountName(accountName: string): string | null {
 
   return null; // 匹配成功则返回null
 }
+
+export function validateName(name: string): string | null {
+  const regex = /^[\u4e00-\u9fa5]{2,3}$/;
+  if (!regex.test(name)) {
+    if (name.length < 2 || name.length > 3) {
+      return 'The length of the name does not meet the requirements, it should be 2 to 3 Chinese characters';
+    } else if (!/[\u4e00-\u9fa5]/.test(name)) {
+      return 'Names should contain only Chinese characters';
+    } else {
+      return 'Incorrectly formatted name';
+    }
+  }
+  return null; // 如果姓名匹配，返回null表示没有错误
+}
+
+export function validateAddress(address: string): string | null {
+  const regex = /^[\u4e00-\u9fa5\d\s]+$/;
+  if (!regex.test(address)) {
+    if (!/[\u4e00-\u9fa5]/.test(address)) {
+      return 'The address should contain at least one Chinese character';
+    } else if (!/\d/.test(address)) {
+      return 'The address should contain at least one number';
+    } else if (!/\s/.test(address)) {
+      return 'The address should contain at least one space to separate the different sections';
+    } else {
+      return 'The address is not in the correct format, please check your inputs';
+    }
+  }
+  return null; // 如果地址匹配，返回null表示没有错误
+}
+
+export function validatePostalCode(postalCode: string): string | null {
+  const regex = /^\d{6}$/;
+  if (!regex.test(postalCode)) {
+    if (postalCode.length !== 6) {
+      return 'The length of the postal code is incorrect, it should be 6 digits';
+    } else if (!/^\d+$/.test(postalCode)) {
+      return 'Postal codes should contain only numbers';
+    } else {
+      return 'Incorrectly formatted postal code';
+    }
+  }
+  return null; // 如果邮政编码匹配，返回null表示没有错误
+}

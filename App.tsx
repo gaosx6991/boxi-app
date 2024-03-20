@@ -7,6 +7,7 @@ import Register from './src/screens/Register/Register.tsx';
 import Login from './src/screens/Login/Login.tsx';
 import type {RootStackParamList} from './src/types';
 import BottomTabNavigator from './src/screens/BottomTabNavigator/BottomTabNavigator.tsx';
+import CreateOrder from './src/screens/CreateOrder/CreateOrder.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -39,6 +40,11 @@ function App() {
           name="BottomTabNavigator"
           component={BottomTabNavigator}
           options={{headerShown: false, animation: 'ios'}}
+        />
+        <Stack.Screen
+          name="CreateOrder"
+          component={CreateOrder}
+          options={{headerShown: false, animation: 'slide_from_bottom'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

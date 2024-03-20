@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Register: undefined;
   Login: {type: 'Email' | 'Phone Number'};
   BottomTabNavigator: undefined;
+  CreateOrder: undefined;
 };

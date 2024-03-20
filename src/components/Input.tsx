@@ -19,9 +19,16 @@ import visibility from '../assets/visibility.png';
 type Props = {
   styles?: StyleProp<ViewStyle>;
   title: string;
-  type: 'Account Name' | 'Email' | 'Password' | 'Phone Number';
+  type:
+    | 'Account Name'
+    | 'Email'
+    | 'Password'
+    | 'Phone Number'
+    | 'Address'
+    | 'Postal Zip';
   value: string;
-  onValueChange: (value: string) => void;
+  onValueChange?: (value: string) => void;
+  placeholder?: string | undefined;
   valid: boolean;
   errMsg?: string;
 };
@@ -31,6 +38,8 @@ const icons = {
   Email: [check],
   Password: [check, visibility],
   'Phone Number': [check],
+  Address: [check],
+  'Postal Zip': [check],
 };
 
 export default (props: Props) => {
@@ -64,8 +73,9 @@ export default (props: Props) => {
           onChangeText={props.onValueChange}
           value={props.value}
           secureTextEntry={props.type === 'Password' && !visibility}
+          placeholder={props.placeholder}
         />
-        {icon.map((value, index, array) => {
+        {icon.map((value, index) => {
           if (props.type === 'Password' && index === 1) {
             return (
               <TouchableOpacity

@@ -1,0 +1,5 @@
+export enum PAGE {
+  SHIPMENT_FORM,
+  RECIPIENT_FORM,
+  REVIEW_ORDER,
+}

@@ -8,9 +8,15 @@ import track_order from '../../../assets/track_order.png';
 // @ts-ignore
 import check_price from '../../../assets/check_price.png';
 import LookingForItem, {Props as ItemProps} from './LookingForItem.tsx';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
 
 export default () => {
-  const handleSendPackagePress = useCallback(() => {}, []);
+  const navigation = useNavigation<NativeStackNavigatorProps>();
+
+  const handleSendPackagePress = useCallback(() => {
+    navigation.push('CreateOrder');
+  }, [navigation]);
   const handleTrackOrderPress = useCallback(() => {}, []);
   const handleCheckPricePress = useCallback(() => {}, []);
 

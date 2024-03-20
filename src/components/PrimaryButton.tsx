@@ -19,7 +19,7 @@ export default (props: Props) => {
     if (!props.disabled) {
       props.onPress();
     }
-  }, [props.disabled]);
+  }, [props.disabled, props.onPress]);
 
   const disabledStyle: StyleProp<ViewStyle> = useMemo(() => {
     return props.disabled
