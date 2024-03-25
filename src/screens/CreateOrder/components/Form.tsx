@@ -12,13 +12,15 @@ import ItemType, {ITEM_TYPE, itemTypes} from './ItemType.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
 import {PAGE} from '../common.ts';
 import PackageSize, {packageSizes} from './PackageSize.tsx';
-import Info from './Info.tsx';
+import Info from '../../../components/Info.tsx';
 // @ts-ignore
 import shipper from '../../../assets/shipper.png';
 // @ts-ignore
 import recipient from '../../../assets/recipient.png';
 import Line from './Line.tsx';
 import Price from './Price.tsx';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -196,7 +198,32 @@ export default (props: Props) => {
     }
   }, [props.page]);
 
-  const handlePress = useCallback(() => {}, []);
+  const navigation = useNavigation<NativeStackNavigatorProps>();
+
+  const handlePress = useCallback(() => {
+    navigation.navigate('OnProgressPickup', {
+      senderInfo: {
+        senderName,
+        shipperPhoneNumber,
+        senderAddress,
+      },
+      recipientInfo: {
+        recipientName,
+        phoneNumber,
+        recipientAddress,
+        postalZip,
+      },
+    });
+  }, [
+    navigation,
+    senderName,
+    shipperPhoneNumber,
+    senderAddress,
+    recipientName,
+    phoneNumber,
+    recipientAddress,
+    postalZip,
+  ]);
 
   return (
     <View style={[styles.root, props.styles]}>

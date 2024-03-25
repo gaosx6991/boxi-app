@@ -8,6 +8,7 @@ import Login from './src/screens/Login/Login.tsx';
 import type {RootStackParamList} from './src/types';
 import BottomTabNavigator from './src/screens/BottomTabNavigator/BottomTabNavigator.tsx';
 import CreateOrder from './src/screens/CreateOrder/CreateOrder.tsx';
+import OnProgressPickup from './src/screens/OnProgressPickup/OnProgressPickup.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -45,6 +46,11 @@ function App() {
           name="CreateOrder"
           component={CreateOrder}
           options={{headerShown: false, animation: 'slide_from_bottom'}}
+        />
+        <Stack.Screen
+          name="OnProgressPickup"
+          component={OnProgressPickup}
+          options={{headerShown: false, animation: 'ios'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

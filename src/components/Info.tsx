@@ -3,7 +3,7 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {ImageSourcePropType} from 'react-native/Libraries/Image/Image';
 
 type Props = {
-  title: string;
+  title?: string;
   icon: ImageSourcePropType;
   header: string;
   subHeader?: string;
@@ -13,9 +13,11 @@ type Props = {
 export default (props: Props) => {
   return (
     <View style={styles.root}>
-      <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode={'tail'}>
-        {props.title}
-      </Text>
+      {props.title && (
+        <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode={'tail'}>
+          {props.title}
+        </Text>
+      )}
       <View style={styles.container}>
         <Image style={styles.icon} source={props.icon} />
         <View style={styles.content}>
