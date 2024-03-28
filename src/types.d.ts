@@ -19,3 +19,7 @@ export type RootStackParamList = {
   CreateOrder: undefined;
   OnProgressPickup: {senderInfo: SenderInfo; recipientInfo: RecipientInfo};
 };
+
+export interface MillisecondTimestamp {
+  readonly value: number;
+}
