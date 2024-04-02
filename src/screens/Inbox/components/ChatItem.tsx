@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {
   Image,
   ScrollView,
@@ -11,17 +11,18 @@ import {
   ViewStyle,
 } from 'react-native';
 import {ImageSourcePropType} from 'react-native/Libraries/Image/Image';
-import {MillisecondTimestamp} from '../../../types';
+import {ChatRef, MillisecondTimestamp, Role} from '../../../types';
 import {formatTimeAgo} from '../../../utils/datetime.ts';
 // @ts-ignore
 import trash from '../../../assets/trash.png';
+import Chat from '../../Chat/Chat.tsx';
 
 export type ItemProps = {
   id: string;
   avatar: ImageSourcePropType;
   username: string;
   message: string;
-  role: 'Courier' | 'User';
+  role: Role;
   isNew?: boolean;
   timestamp: MillisecondTimestamp;
 };
@@ -44,12 +45,21 @@ export default ({item: props}: Props) => {
     };
   }, [windowWidth]);
 
+  const chatRef = useRef<ChatRef>(null);
+
+  const handlePress = useCallback(() => {
+    chatRef.current?.show();
+  }, [chatRef]);
+
   return (
     <ScrollView
       contentContainerStyle={[styles.root, backgroundColor]}
       showsHorizontalScrollIndicator={false}
       horizontal={true}>
-      <View style={[styles.box, boxStyle]}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={[styles.box, boxStyle]}
+        onPress={handlePress}>
         <View style={styles.container}>
           <TouchableOpacity activeOpacity={0.7}>
             <Image style={styles.avatar} source={props.avatar}></Image>
@@ -72,10 +82,12 @@ export default ({item: props}: Props) => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.7} style={styles.deleteBtn}>
         <Image style={styles.deleteIcon} source={trash}></Image>
       </TouchableOpacity>
+
+      <Chat ref={chatRef} />
     </ScrollView>
   );
 };

@@ -4,7 +4,7 @@ import Background from '../../components/Background.tsx';
 import Board from './components/Board.tsx';
 // @ts-ignore
 import bell from '../../assets/bell.png';
-import MessageList from './components/MessageList.tsx';
+import ChatList from './components/ChatList.tsx';
 
 export default () => {
   return (
@@ -16,7 +16,7 @@ export default () => {
       />
 
       <Board>
-        <MessageList />
+        <ChatList />
       </Board>
     </Background>
   );

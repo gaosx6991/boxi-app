@@ -20,6 +20,12 @@ export type RootStackParamList = {
   OnProgressPickup: {senderInfo: SenderInfo; recipientInfo: RecipientInfo};
 };
 
+export type Role = 'Courier' | 'User';
+
 export interface MillisecondTimestamp {
   readonly value: number;
+}
+
+export interface ChatRef {
+  show: () => void;
 }

@@ -1,8 +1,12 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
-export default () => {
-  return <View style={styles.root}></View>;
+type Props = {
+  style?: StyleProp<ViewStyle>;
+};
+
+export default (props: Props) => {
+  return <View style={[styles.root, props.style]}></View>;
 };
 
 const styles = StyleSheet.create({

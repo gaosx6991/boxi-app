@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
 
-import MessageItem, {ItemProps} from './MessageItem.tsx';
+import ChatItem, {ItemProps} from './ChatItem.tsx';
 // @ts-ignore
 import photo from '../../../assets/mock/photo.png';
 // @ts-ignore
@@ -53,7 +53,7 @@ const DATA: ItemProps[] = [
 
 export default () => {
   const renderItem = useCallback(({item}: {item: ItemProps}) => {
-    return <MessageItem item={item} />;
+    return <ChatItem item={item} />;
   }, []);
 
   return (
