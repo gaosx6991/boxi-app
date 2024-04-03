@@ -96,15 +96,19 @@ export default forwardRef(({}, ref: ForwardedRef<ChatRef>) => {
 
   const insertMessage = useCallback(
     (content: string) => {
-      data.splice(0, 0, {
-        id: (parseInt(data[0]['id']) + 1).toString(),
-        content,
-        timestamp: Date.now() as unknown as MillisecondTimestamp,
-        authorIsMe: true,
+      setData(prevState => {
+        return [
+          {
+            id: (parseInt(prevState[0]['id']) + 1).toString(),
+            content,
+            timestamp: Date.now() as unknown as MillisecondTimestamp,
+            authorIsMe: true,
+          },
+          ...prevState,
+        ];
       });
-      setData(data);
     },
-    [data, setData],
+    [setData],
   );
 
   const [visible, setVisible] = useState<boolean>(false);

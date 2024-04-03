@@ -25,7 +25,7 @@ export default (props: Props) => {
       return;
     }
 
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.spring();
 
     setValue('');
 
