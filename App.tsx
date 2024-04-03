@@ -45,7 +45,7 @@ function App() {
         <Stack.Screen
           name="CreateOrder"
           component={CreateOrder}
-          options={{headerShown: false, animation: 'slide_from_bottom'}}
+          options={{headerShown: false, animation: 'ios'}}
         />
         <Stack.Screen
           name="OnProgressPickup"
