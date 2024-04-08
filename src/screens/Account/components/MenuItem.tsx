@@ -34,7 +34,10 @@ export default (props: Props) => {
       <Image source={props.icon} style={styles.icon} />
       <Text style={styles.text}>{props.text}</Text>
 
-      <TouchableOpacity activeOpacity={0.7} style={styles.arrowBtn}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.arrowBtn}
+        onPress={props.onPress}>
         <Image style={styles.arrowIcon} source={arrow} />
       </TouchableOpacity>
 

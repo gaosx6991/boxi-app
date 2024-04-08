@@ -3,18 +3,19 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useImperativeHandle,
   useState,
 } from 'react';
-import {Modal} from 'react-native';
 
 import MessageList from './components/MessageList.tsx';
 import Input from './components/Input.tsx';
 import {ItemProps} from './components/MessageItem.tsx';
-import {ChatRef, MillisecondTimestamp} from '../../types';
-import ListHeader from './components/ListHeader.tsx';
+import {MillisecondTimestamp, ModalScreenRef} from '../../types';
+import ModalScreen from '../../components/ModalScreen.tsx';
+// @ts-ignore
+import photo_3 from '../../assets/mock/photo_3.png';
+import Info from './components/Info.tsx';
 
-export default forwardRef(({}, ref: ForwardedRef<ChatRef>) => {
+export default forwardRef(({}, ref: ForwardedRef<ModalScreenRef>) => {
   const [data, setData] = useState<ItemProps[]>([]);
 
   useEffect(() => {
@@ -111,31 +112,18 @@ export default forwardRef(({}, ref: ForwardedRef<ChatRef>) => {
     [setData],
   );
 
-  const [visible, setVisible] = useState<boolean>(false);
-
-  const show = useCallback(() => {
-    setVisible(true);
-  }, [setVisible]);
-
-  useImperativeHandle(ref, () => {
-    return {show};
-  });
-
-  const handleClosePress = useCallback(() => {
-    setVisible(false);
-  }, [setVisible]);
-
   return (
-    <Modal
-      animationType={'slide'}
-      transparent={true}
-      visible={visible}
-      onRequestClose={handleClosePress}>
-      <ListHeader onClosePress={handleClosePress} />
+    <ModalScreen title={'Felix Khan'} ref={ref}>
+      <Info
+        role={'User'}
+        username={'Felix Khan'}
+        avatar={photo_3}
+        online={Date.now() as unknown as MillisecondTimestamp}
+      />
 
       <MessageList data={data} />
 
       <Input onSendPress={insertMessage} />
-    </Modal>
+    </ModalScreen>
   );
 });

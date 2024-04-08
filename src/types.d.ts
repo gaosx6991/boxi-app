@@ -26,6 +26,7 @@ export interface MillisecondTimestamp {
   readonly value: number;
 }
 
-export interface ChatRef {
+export interface ModalScreenRef {
   show: () => void;
+  hide: () => void;
 }

@@ -2,10 +2,10 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 // @ts-ignore
-import close from '../../../assets/close.png';
+import close from '../assets/close.png';
 
 type Props = {
-  username: string;
+  title: string;
   onClosePress: () => void;
 };
 
@@ -19,7 +19,7 @@ export default (props: Props) => {
         <Image style={styles.closeImg} source={close}></Image>
       </TouchableOpacity>
 
-      <Text style={styles.usernameTxt}>{props.username}</Text>
+      <Text style={styles.titleTxt}>{props.title}</Text>
     </View>
   );
 };
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     tintColor: '#5B57BA',
   },
-  usernameTxt: {
+  titleTxt: {
     fontSize: 18,
     color: '#1B1B1B',
     flex: 1,

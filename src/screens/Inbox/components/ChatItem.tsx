@@ -11,7 +11,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import {ImageSourcePropType} from 'react-native/Libraries/Image/Image';
-import {ChatRef, MillisecondTimestamp, Role} from '../../../types';
+import {MillisecondTimestamp, ModalScreenRef, Role} from '../../../types';
 import {formatTimeAgo} from '../../../utils/datetime.ts';
 // @ts-ignore
 import trash from '../../../assets/trash.png';
@@ -45,7 +45,7 @@ export default ({item: props}: Props) => {
     };
   }, [windowWidth]);
 
-  const chatRef = useRef<ChatRef>(null);
+  const chatRef = useRef<ModalScreenRef>(null);
 
   const handlePress = useCallback(() => {
     chatRef.current?.show();

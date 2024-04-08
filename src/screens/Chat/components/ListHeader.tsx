@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import Header from './Header.tsx';
+import ModalScreenHeader from '../../../components/ModalScreenHeader.tsx';
 import Info from './Info.tsx';
 // @ts-ignore
 import photo_3 from '../../../assets/mock/photo_3.png';
@@ -13,7 +13,10 @@ type Props = {
 export default (props: Props) => {
   return (
     <View style={styles.root}>
-      <Header onClosePress={props.onClosePress} username={'Felix Khan'} />
+      <ModalScreenHeader
+        onClosePress={props.onClosePress}
+        title={'Felix Khan'}
+      />
 
       <Info
         role={'User'}
