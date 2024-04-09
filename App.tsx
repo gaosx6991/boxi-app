@@ -9,6 +9,7 @@ import type {RootStackParamList} from './src/types';
 import BottomTabNavigator from './src/screens/BottomTabNavigator/BottomTabNavigator.tsx';
 import CreateOrder from './src/screens/CreateOrder/CreateOrder.tsx';
 import OnProgressPickup from './src/screens/OnProgressPickup/OnProgressPickup.tsx';
+import EditProfile from './src/screens/EditProfile/EditProfile.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -50,6 +51,11 @@ function App() {
         <Stack.Screen
           name="OnProgressPickup"
           component={OnProgressPickup}
+          options={{headerShown: false, animation: 'ios'}}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
           options={{headerShown: false, animation: 'ios'}}
         />
       </Stack.Navigator>

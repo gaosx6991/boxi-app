@@ -1,14 +1,16 @@
 import React, {PropsWithChildren} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 
-type Props = PropsWithChildren;
+type Props = PropsWithChildren & {
+  containerStyle?: StyleProp<ViewStyle>;
+};
 
 export default (props: Props) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={styles.root}
-      contentContainerStyle={styles.container}>
+      contentContainerStyle={[styles.container, props.containerStyle]}>
       {props.children}
     </ScrollView>
   );

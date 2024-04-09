@@ -18,6 +18,7 @@ export type RootStackParamList = {
   BottomTabNavigator: undefined;
   CreateOrder: undefined;
   OnProgressPickup: {senderInfo: SenderInfo; recipientInfo: RecipientInfo};
+  EditProfile: undefined;
 };
 
 export type Role = 'Courier' | 'User';
