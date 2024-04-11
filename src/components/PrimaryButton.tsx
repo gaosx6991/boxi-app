@@ -9,7 +9,7 @@ import {
 
 type Props = {
   text: string;
-  onPress: () => void;
+  onPress?: () => void;
   styles?: StyleProp<ViewStyle>;
   disabled?: boolean;
 };
@@ -17,7 +17,7 @@ type Props = {
 export default (props: Props) => {
   const handlePress = useCallback(() => {
     if (!props.disabled) {
-      props.onPress();
+      props.onPress?.();
     }
   }, [props.disabled, props.onPress]);
 

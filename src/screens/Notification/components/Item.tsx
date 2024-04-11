@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -7,14 +7,16 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {MillisecondTimestamp} from '../../../types';
+import {MillisecondTimestamp, ModalScreenRef} from '../../../types';
 import {formatTimeAgo} from '../../../utils/datetime.ts';
+import NotificationDetail from '../../NotificationDetail/NotificationDetail.tsx';
 
 export type ItemProps = {
   id: string;
   title: string;
   isNew?: boolean;
   content: string;
+  type: 'Normal' | 'Update';
   timestamp: MillisecondTimestamp;
 };
 
@@ -27,10 +29,17 @@ export default ({item: props}: Props) => {
     return {backgroundColor: props.isNew ? '#5B57BA05' : 'transparent'};
   }, [props.isNew]);
 
+  const ref = useRef<ModalScreenRef>(null);
+
+  const handlePress = useCallback(() => {
+    ref.current?.show();
+  }, [ref]);
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      style={[styles.root, backgroundColor]}>
+      style={[styles.root, backgroundColor]}
+      onPress={handlePress}>
       <View style={styles.content}>
         <Text style={styles.titleTxt} numberOfLines={1} ellipsizeMode={'tail'}>
           {props.title}
@@ -50,6 +59,8 @@ export default ({item: props}: Props) => {
           {formatTimeAgo(props.timestamp)}
         </Text>
       )}
+
+      <NotificationDetail ref={ref} title={props.title} type={props.type} />
     </TouchableOpacity>
   );
 };
