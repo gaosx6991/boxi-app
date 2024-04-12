@@ -97,6 +97,17 @@ export function formatDatetime(timestamp: MillisecondTimestamp): string {
   }
 }
 
+export function formatUnixTimestampToDateString(
+  timestamp: MillisecondTimestamp,
+): string {
+  const date = new Date(timestamp as unknown as number);
+  const options = {day: 'numeric', month: 'long', year: 'numeric'};
+  return date.toLocaleDateString(
+    'en-US',
+    options as Intl.DateTimeFormatOptions,
+  );
+}
+
 // 定义月份的简写
 const monthShortNames = {
   '01': 'Jan',
