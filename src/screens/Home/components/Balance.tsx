@@ -1,4 +1,10 @@
-import React, {PropsWithChildren, useCallback, useMemo, useState} from 'react';
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   Image,
   StyleProp,
@@ -11,6 +17,8 @@ import {
 
 // @ts-ignore
 import balance from '../../../assets/balance.png';
+import Wallet from '../../Wallet/Wallet.tsx';
+import {ModalScreenRef} from '../../../types';
 
 type Props = PropsWithChildren & {
   styles: StyleProp<ViewStyle>;
@@ -20,7 +28,11 @@ export default (props: Props) => {
   const [amount] = useState<number>(1234567.89);
   const formattedAmount = useMemo(() => amount.toLocaleString(), [amount]);
 
-  const handlePress = useCallback(() => {}, []);
+  const walletRef = useRef<ModalScreenRef>(null);
+
+  const handlePress = useCallback(() => {
+    walletRef.current?.show();
+  }, [walletRef]);
 
   return (
     <View style={[styles.root, props.styles]}>
@@ -34,6 +46,8 @@ export default (props: Props) => {
         </TouchableOpacity>
       </View>
       {props.children}
+
+      <Wallet ref={walletRef} balance={formattedAmount} />
     </View>
   );
 };
