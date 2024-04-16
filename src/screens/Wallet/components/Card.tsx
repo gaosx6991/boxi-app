@@ -1,14 +1,22 @@
-import React from 'react';
+import React, {useCallback, useRef} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 // @ts-ignore
 import add from '../../../assets/add.png';
+import PaymentMethod from '../../PaymentMethod/PaymentMethod.tsx';
+import {ModalScreenRef} from '../../../types';
 
 type Props = {
   balance: string;
 };
 
 export default (props: Props) => {
+  const paymentRef = useRef<ModalScreenRef>(null);
+
+  const handleTopUpPress = useCallback(() => {
+    paymentRef.current?.show();
+  }, [paymentRef]);
+
   return (
     <View style={styles.root}>
       <View style={styles.myBalance}>
@@ -20,10 +28,15 @@ export default (props: Props) => {
           ${props.balance}
         </Text>
       </View>
-      <TouchableOpacity activeOpacity={0.7} style={styles.topUp}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.topUp}
+        onPress={handleTopUpPress}>
         <Image source={add} style={styles.addIcon} />
         <Text style={styles.topUpTxt}>Top Up</Text>
       </TouchableOpacity>
+
+      <PaymentMethod ref={paymentRef} amount={(249).toLocaleString()} />
     </View>
   );
 };
