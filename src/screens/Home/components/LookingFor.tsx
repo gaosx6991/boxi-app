@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from 'react';
+import React, {useCallback, useMemo, useRef} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
 // @ts-ignore
@@ -10,14 +10,20 @@ import check_price from '../../../assets/check_price.png';
 import LookingForItem, {Props as ItemProps} from './LookingForItem.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import ScanBarcode from '../../ScanBarcode/ScanBarcode.tsx';
+import {ModalScreenRef} from '../../../types';
 
 export default () => {
   const navigation = useNavigation<NativeStackNavigatorProps>();
 
+  const scanBarcodeRef = useRef<ModalScreenRef>(null);
+
   const handleSendPackagePress = useCallback(() => {
     navigation.push('CreateOrder');
   }, [navigation]);
-  const handleTrackOrderPress = useCallback(() => {}, []);
+  const handleTrackOrderPress = useCallback(() => {
+    scanBarcodeRef.current?.show();
+  }, [scanBarcodeRef]);
   const handleCheckPricePress = useCallback(() => {}, []);
 
   const items: ItemProps[] = useMemo(() => {
@@ -46,6 +52,8 @@ export default () => {
           />
         ))}
       </View>
+
+      <ScanBarcode ref={scanBarcodeRef} />
     </View>
   );
 };
