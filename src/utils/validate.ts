@@ -115,3 +115,24 @@ export function validatePostalCode(postalCode: string): string | null {
   }
   return null; // 如果邮政编码匹配，返回null表示没有错误
 }
+
+export function validatePackageId(packageId: string): string | null {
+  // 正则表达式：包裹ID格式为 "BX-" 后面跟着 8 个字母或数字
+  const regex = /^BX-[A-Za-z0-9]{8}$/;
+
+  if (!regex.test(packageId)) {
+    // 如果不匹配，检查具体原因
+    if (!packageId.startsWith('BX-')) {
+      return 'Package ID must start with "BX-"';
+    } else if (packageId.length !== 11) {
+      return 'Package ID must be exactly 11 characters in length';
+    } else if (!/^[A-Za-z0-9]+$/.test(packageId.slice(3))) {
+      return 'Package ID must contain 8 letters or numbers after "BX-"';
+    } else {
+      // 如果前面的条件都不满足，但整体不匹配，则可能是其他复杂情况
+      return 'Incorrectly formatted package ID';
+    }
+  }
+
+  return null; // 匹配成功则返回null
+}

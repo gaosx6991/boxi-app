@@ -25,7 +25,8 @@ type Props = {
     | 'Password'
     | 'Phone Number'
     | 'Address'
-    | 'Postal Zip';
+    | 'Postal Zip'
+    | 'Package ID';
   value: string;
   onValueChange?: (value: string) => void;
   placeholder?: string | undefined;
@@ -40,6 +41,7 @@ const icons = {
   'Phone Number': [check],
   Address: [check],
   'Postal Zip': [check],
+  'Package ID': [check],
 };
 
 export default (props: Props) => {
