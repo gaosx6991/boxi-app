@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+
 import Input from '../../../components/Input.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
 import {
@@ -7,6 +8,11 @@ import {
   validateEmail,
   validatePassword,
 } from '../../../utils/validate.ts';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {createUserAsync, status} from '../../../store/User.ts';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import Toast from 'react-native-toast-message';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -70,7 +76,27 @@ export default (props: Props) => {
     handlePasswordValueChange(password);
   }, []);
 
-  const handlePress = useCallback(() => {}, []);
+  const dispatch = useAppDispatch();
+
+  const handlePress = useCallback(() => {
+    dispatch(createUserAsync({accountName, email, password}));
+  }, [dispatch, accountName, email, password]);
+
+  const userStatus = useAppSelector(status);
+
+  const navigation = useNavigation<NativeStackNavigatorProps>();
+
+  useEffect(() => {
+    if (userStatus === 'success') {
+      Toast.show({
+        type: 'success',
+        text1: 'User created',
+        text2: 'Please login',
+      });
+
+      navigation.goBack();
+    }
+  }, [userStatus]);
 
   return (
     <View style={[styles.root, props.styles]}>

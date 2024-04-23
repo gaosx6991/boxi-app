@@ -10,6 +10,8 @@ import BottomTabNavigator from './src/screens/BottomTabNavigator/BottomTabNaviga
 import CreateOrder from './src/screens/CreateOrder/CreateOrder.tsx';
 import OnProgressPickup from './src/screens/OnProgressPickup/OnProgressPickup.tsx';
 import EditProfile from './src/screens/EditProfile/EditProfile.tsx';
+import Loading from './src/components/Loading.tsx';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +23,8 @@ function App() {
         barStyle={'dark-content'}
         translucent={true}
       />
+
+      <Loading />
 
       <Stack.Navigator initialRouteName={'Onboarding'}>
         <Stack.Screen
@@ -59,6 +63,8 @@ function App() {
           options={{headerShown: false, animation: 'ios'}}
         />
       </Stack.Navigator>
+
+      <Toast />
     </NavigationContainer>
   );
 }
