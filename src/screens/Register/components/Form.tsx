@@ -9,7 +9,7 @@ import {
   validatePassword,
 } from '../../../utils/validate.ts';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
-import {createUserAsync, status} from '../../../store/User.ts';
+import {createUserAsync, scene, setScene, status} from '../../../store/User.ts';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import Toast from 'react-native-toast-message';
@@ -79,15 +79,17 @@ export default (props: Props) => {
   const dispatch = useAppDispatch();
 
   const handlePress = useCallback(() => {
+    dispatch(setScene('CreateUser'));
     dispatch(createUserAsync({accountName, email, password}));
   }, [dispatch, accountName, email, password]);
 
   const userStatus = useAppSelector(status);
+  const userScene = useAppSelector(scene);
 
   const navigation = useNavigation<NativeStackNavigatorProps>();
 
   useEffect(() => {
-    if (userStatus === 'success') {
+    if (userStatus === 'success' && userScene === 'CreateUser') {
       Toast.show({
         type: 'success',
         text1: 'User created',
@@ -96,7 +98,7 @@ export default (props: Props) => {
 
       navigation.goBack();
     }
-  }, [userStatus]);
+  }, [userStatus, userScene]);
 
   return (
     <View style={[styles.root, props.styles]}>

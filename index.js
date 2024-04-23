@@ -4,9 +4,10 @@
 
 import {AppRegistry, Platform, UIManager} from 'react-native';
 import App from './App';
-import {store} from './src/store';
+import {persistor, store} from './src/store';
 import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 
 if (Platform.OS === 'android') {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -16,6 +17,8 @@ if (Platform.OS === 'android') {
 
 AppRegistry.registerComponent(appName, () => () => (
   <Provider store={store}>
-    <App />
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 ));

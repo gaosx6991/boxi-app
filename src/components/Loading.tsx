@@ -14,7 +14,7 @@ export default () => {
   );
 
   useEffect(() => {
-    if (userStatus === 'failed') {
+    if (userStatus !== 'failed') {
       return;
     }
 

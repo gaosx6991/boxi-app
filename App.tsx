@@ -12,10 +12,14 @@ import OnProgressPickup from './src/screens/OnProgressPickup/OnProgressPickup.ts
 import EditProfile from './src/screens/EditProfile/EditProfile.tsx';
 import Loading from './src/components/Loading.tsx';
 import Toast from 'react-native-toast-message';
+import {useAppSelector} from './src/hooks';
+import {id} from './src/store/User.ts';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
+  const userId = useAppSelector(id);
+
   return (
     <NavigationContainer>
       <StatusBar
@@ -26,7 +30,8 @@ function App() {
 
       <Loading />
 
-      <Stack.Navigator initialRouteName={'Onboarding'}>
+      <Stack.Navigator
+        initialRouteName={userId ? 'BottomTabNavigator' : 'Onboarding'}>
         <Stack.Screen
           name="Onboarding"
           component={Onboarding}

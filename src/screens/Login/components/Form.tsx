@@ -10,6 +10,14 @@ import {
   validatePhoneNumber,
 } from '../../../utils/validate.ts';
 import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {
+  loginByEmailAsync,
+  scene,
+  setScene,
+  status,
+} from '../../../store/User.ts';
+import Toast from 'react-native-toast-message';
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -82,11 +90,36 @@ export default (props: Props) => {
     handlePasswordValueChange(password);
   }, []);
 
+  const userStatus = useAppSelector(status);
+  const userScene = useAppSelector(scene);
+
   const navigation = useNavigation<NativeStackNavigatorProps>();
 
+  const dispatch = useAppDispatch();
+
   const handlePress = useCallback(() => {
-    navigation.navigate('BottomTabNavigator');
-  }, [navigation]);
+    loginType === 'Email' && dispatch(setScene('LoginByEmail'));
+    loginType === 'Email' && dispatch(loginByEmailAsync({email, password}));
+  }, [loginType, email, password]);
+
+  useEffect(() => {
+    if (
+      userStatus === 'success' &&
+      loginType === 'Email' &&
+      userScene === 'LoginByEmail'
+    ) {
+      Toast.show({
+        type: 'success',
+        text1: 'Login Success',
+        text2: 'Please enjoy',
+      });
+
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'BottomTabNavigator'}],
+      });
+    }
+  }, [userStatus, userScene, loginType]);
 
   return (
     <View style={[styles.root, props.styles]}>
