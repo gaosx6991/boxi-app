@@ -9,16 +9,19 @@ import {
   CreateUserRequest,
   loginByEmail,
   LoginByEmailRequest,
-  LoginByEmailResponse,
+  loginByPhoneNumber,
+  LoginByPhoneNumberRequest,
+  LoginResponse,
 } from '../apis/User.ts';
 import {RootState} from './index.ts';
 
-type Scene = 'CreateUser' | 'LoginByEmail';
+type Scene = 'CreateUser' | 'LoginByEmail' | 'LoginByPhoneNumber';
 
 interface UserState {
   id?: string;
   accountName?: string;
   email?: string;
+  phoneNumber?: string;
   token?: string;
   error?: SerializedError;
   status: 'idle' | 'loading' | 'success' | 'failed';
@@ -31,17 +34,35 @@ const initialState: UserState = {
 
 export const createUserAsync = createAsyncThunk<void, CreateUserRequest>(
   'user/createUser',
-  async (userDoc, {getState}) => {
+  async userDoc => {
     return await createUser(userDoc);
   },
 );
 
 export const loginByEmailAsync = createAsyncThunk<
-  LoginByEmailResponse,
+  LoginResponse,
   LoginByEmailRequest
->('user/loginByEmail', async (request, {getState}) => {
+>('user/loginByEmail', async request => {
   return await loginByEmail(request);
 });
+
+export const loginByPhoneNumberAsync = createAsyncThunk<
+  LoginResponse,
+  LoginByPhoneNumberRequest
+>('user/loginByPhoneNumber', async request => {
+  return await loginByPhoneNumber(request);
+});
+
+function getReducer() {
+  return (state: UserState, action: PayloadAction<LoginResponse>) => {
+    state.status = 'success';
+    state.id = action.payload.id;
+    state.accountName = action.payload.accountName;
+    state.email = action.payload.email;
+    state.phoneNumber = action.payload.phoneNumber;
+    state.token = action.payload.token;
+  };
+}
 
 export const userSlice = createSlice({
   name: 'user',
@@ -60,7 +81,7 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.error;
       })
-      .addCase(createUserAsync.fulfilled, (state, action) => {
+      .addCase(createUserAsync.fulfilled, state => {
         state.status = 'success';
       })
       .addCase(loginByEmailAsync.pending, state => {
@@ -70,16 +91,15 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.error;
       })
-      .addCase(
-        loginByEmailAsync.fulfilled,
-        (state, action: PayloadAction<LoginByEmailResponse>) => {
-          state.status = 'success';
-          state.id = action.payload.id;
-          state.accountName = action.payload.accountName;
-          state.email = action.payload.email;
-          state.token = action.payload.token;
-        },
-      );
+      .addCase(loginByEmailAsync.fulfilled, getReducer())
+      .addCase(loginByPhoneNumberAsync.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(loginByPhoneNumberAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      .addCase(loginByPhoneNumberAsync.fulfilled, getReducer());
   },
 });
 

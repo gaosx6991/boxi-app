@@ -13,6 +13,7 @@ import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/nat
 import {useAppDispatch, useAppSelector} from '../../../hooks';
 import {
   loginByEmailAsync,
+  loginByPhoneNumberAsync,
   scene,
   setScene,
   status,
@@ -100,13 +101,16 @@ export default (props: Props) => {
   const handlePress = useCallback(() => {
     loginType === 'Email' && dispatch(setScene('LoginByEmail'));
     loginType === 'Email' && dispatch(loginByEmailAsync({email, password}));
-  }, [loginType, email, password]);
+    loginType === 'Phone Number' && dispatch(setScene('LoginByPhoneNumber'));
+    loginType === 'Phone Number' &&
+      dispatch(loginByPhoneNumberAsync({phoneNumber, password}));
+  }, [loginType, email, phoneNumber, password]);
 
   useEffect(() => {
     if (
       userStatus === 'success' &&
-      loginType === 'Email' &&
-      userScene === 'LoginByEmail'
+      ((loginType === 'Email' && userScene === 'LoginByEmail') ||
+        (loginType === 'Phone Number' && userScene === 'LoginByPhoneNumber'))
     ) {
       Toast.show({
         type: 'success',
