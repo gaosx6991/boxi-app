@@ -28,6 +28,7 @@ export type LoginResponse = {
   accountName?: string;
   email?: string;
   phoneNumber?: string;
+  balance?: number;
   token?: string;
 };
 

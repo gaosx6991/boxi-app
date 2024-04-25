@@ -22,6 +22,7 @@ interface UserState {
   accountName?: string;
   email?: string;
   phoneNumber?: string;
+  balance?: number;
   token?: string;
   error?: SerializedError;
   status: 'idle' | 'loading' | 'success' | 'failed';
@@ -60,6 +61,7 @@ function getReducer() {
     state.accountName = action.payload.accountName;
     state.email = action.payload.email;
     state.phoneNumber = action.payload.phoneNumber;
+    state.balance = action.payload.balance;
     state.token = action.payload.token;
   };
 }
@@ -108,5 +110,6 @@ export const {setScene} = userSlice.actions;
 export const status = (state: RootState) => state.user.status;
 export const scene = (state: RootState) => state.user.scene;
 export const id = (state: RootState) => state.user.id;
+export const balance = (state: RootState) => state.user.balance;
 
 export default userSlice.reducer;

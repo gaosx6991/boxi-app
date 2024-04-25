@@ -1,10 +1,4 @@
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, {PropsWithChildren, useCallback, useMemo, useRef} from 'react';
 import {
   Image,
   StyleProp,
@@ -19,14 +13,19 @@ import {
 import balance from '../../../assets/balance.png';
 import Wallet from '../../Wallet/Wallet.tsx';
 import {ModalScreenRef} from '../../../types';
+import {useAppSelector} from '../../../hooks';
+import {balance as amount} from '../../../store/User.ts';
 
 type Props = PropsWithChildren & {
   styles: StyleProp<ViewStyle>;
 };
 
 export default (props: Props) => {
-  const [amount] = useState<number>(1234567.89);
-  const formattedAmount = useMemo(() => amount.toLocaleString(), [amount]);
+  const amountValue = useAppSelector(amount) || 0;
+  const formattedAmount = useMemo(
+    () => amountValue.toLocaleString(),
+    [amountValue],
+  );
 
   const walletRef = useRef<ModalScreenRef>(null);
 
