@@ -43,6 +43,9 @@ export const loginByEmail = async (
     },
     body: JSON.stringify(request),
   });
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
   return result.json();
 };
 
@@ -62,5 +65,8 @@ export const loginByPhoneNumber = async (
     },
     body: JSON.stringify(request),
   });
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
   return result.json();
 };
