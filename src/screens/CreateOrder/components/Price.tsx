@@ -1,23 +1,13 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-
-const shippingAssurancePercent = 0.03;
 
 type Props = {
   boxiRegularPrice: number;
+  shippingAssurance: number;
+  subtotal: number;
 };
 
 export default (props: Props) => {
-  const shippingAssurance = useMemo(
-    () => Math.round(props.boxiRegularPrice * shippingAssurancePercent),
-    [props.boxiRegularPrice, shippingAssurancePercent],
-  );
-
-  const subtotal = useMemo(
-    () => props.boxiRegularPrice + shippingAssurance,
-    [props.boxiRegularPrice, shippingAssurance],
-  );
-
   return (
     <View style={styles.root}>
       <View style={styles.row}>
@@ -26,11 +16,11 @@ export default (props: Props) => {
       </View>
       <View style={styles.row}>
         <Text style={styles.keyTxt}>Shipping Assurance</Text>
-        <Text style={styles.valueTxt}>${shippingAssurance}</Text>
+        <Text style={styles.valueTxt}>${props.shippingAssurance}</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.headerKeyTxt}>Subtotal</Text>
-        <Text style={styles.headerValueTxt}>${subtotal}</Text>
+        <Text style={styles.headerValueTxt}>${props.subtotal}</Text>
       </View>
     </View>
   );

@@ -11,6 +11,7 @@ import {
   REHYDRATE,
 } from 'redux-persist/es/constants';
 import userReducer from './User';
+import orderReducer from './Order';
 
 export const LOG_OUT = 'LOG_OUT';
 
@@ -24,6 +25,7 @@ const persistConfig = {
 
 const appReducer = combineReducers({
   user: userReducer,
+  order: orderReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

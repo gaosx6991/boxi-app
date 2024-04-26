@@ -1,5 +1,12 @@
-import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 // @ts-ignore
 import courier from '../../../assets/courier.png';
@@ -7,20 +14,31 @@ import courier from '../../../assets/courier.png';
 import call from '../../../assets/call.png';
 // @ts-ignore
 import message from '../../../assets/inbox.png';
+import {courierInfo} from '../../../store/Order.ts';
+import {useAppSelector} from '../../../hooks';
 
 export default () => {
+  const courierInfoValue = useAppSelector(courierInfo);
+
+  const handleCallPress = useCallback(async () => {
+    await Linking.openURL(`tel://${courierInfoValue?.phoneNumber}`);
+  }, [courierInfoValue?.phoneNumber]);
+
   return (
     <View style={styles.root}>
       <Image style={styles.avatar} source={courier} />
       <View style={styles.info}>
         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode={'tail'}>
-          Mark Oue
+          {courierInfoValue?.accountName}
         </Text>
         <Text style={styles.numberTxt} numberOfLines={1} ellipsizeMode={'tail'}>
-          8DWH823
+          {courierInfoValue?.number}
         </Text>
       </View>
-      <TouchableOpacity activeOpacity={0.7} style={styles.btn}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.btn}
+        onPress={handleCallPress}>
         <Image style={styles.icon} source={call} />
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.7} style={styles.btn}>

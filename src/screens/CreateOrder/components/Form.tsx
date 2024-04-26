@@ -21,6 +21,10 @@ import Line from './Line.tsx';
 import Price from './Price.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {createOrderAsync, scene, status} from '../../../store/Order.ts';
+
+const shippingAssurancePercent = 0.03;
 
 type Props = {
   styles: StyleProp<ViewStyle>;
@@ -48,6 +52,16 @@ export default (props: Props) => {
   const itemTypeInfo = useMemo(
     () => itemTypes.filter(item => item.type === itemType)[0],
     [itemType, itemTypes],
+  );
+
+  const shippingAssurance = useMemo(
+    () => Math.round(packageSizeInfo.price * shippingAssurancePercent),
+    [packageSizeInfo.price, shippingAssurancePercent],
+  );
+
+  const subtotal = useMemo(
+    () => packageSizeInfo.price + shippingAssurance,
+    [packageSizeInfo.price, shippingAssurance],
   );
 
   const [senderNameValid, setSenderNameValid] = useState<boolean>(true);
@@ -200,21 +214,28 @@ export default (props: Props) => {
 
   const navigation = useNavigation<NativeStackNavigatorProps>();
 
-  const handlePress = useCallback(() => {
-    navigation.navigate('OnProgressPickup', {
-      senderInfo: {
-        senderName,
-        shipperPhoneNumber,
-        senderAddress,
-      },
-      recipientInfo: {
-        recipientName,
-        phoneNumber,
-        recipientAddress,
-        postalZip,
-      },
-    });
+  const statusValue = useAppSelector(status);
+  const sceneValue = useAppSelector(scene);
+
+  useEffect(() => {
+    if (sceneValue === 'CreateOrder' && statusValue === 'success') {
+      navigation.navigate('OnProgressPickup', {
+        senderInfo: {
+          senderName,
+          shipperPhoneNumber,
+          senderAddress,
+        },
+        recipientInfo: {
+          recipientName,
+          phoneNumber,
+          recipientAddress,
+          postalZip,
+        },
+      });
+    }
   }, [
+    sceneValue,
+    statusValue,
     navigation,
     senderName,
     shipperPhoneNumber,
@@ -223,6 +244,43 @@ export default (props: Props) => {
     phoneNumber,
     recipientAddress,
     postalZip,
+  ]);
+
+  const dispatch = useAppDispatch();
+
+  const handlePress = useCallback(() => {
+    dispatch(
+      createOrderAsync({
+        shipmentForm: {
+          senderName: senderName,
+          address: senderAddress,
+          shipperPhoneNumber: shipperPhoneNumber,
+          itemType: itemType.toString(),
+          packageSize: packageSize.toString(),
+        },
+        recipientForm: {
+          recipientName: recipientName,
+          address: recipientAddress,
+          postalZip: postalZip,
+          phoneNumber: phoneNumber,
+        },
+        boxiRegular: packageSizeInfo.price,
+        shippingAssurance: shippingAssurance,
+        subtotal: subtotal,
+      }),
+    );
+  }, [
+    dispatch,
+    senderName,
+    shipperPhoneNumber,
+    senderAddress,
+    recipientName,
+    phoneNumber,
+    recipientAddress,
+    postalZip,
+    subtotal,
+    shippingAssurance,
+    packageSizeInfo,
   ]);
 
   return (
@@ -360,7 +418,11 @@ export default (props: Props) => {
       {props.page === PAGE.REVIEW_ORDER && <Line />}
 
       {props.page === PAGE.REVIEW_ORDER && (
-        <Price boxiRegularPrice={packageSizeInfo.price} />
+        <Price
+          boxiRegularPrice={packageSizeInfo.price}
+          shippingAssurance={shippingAssurance}
+          subtotal={subtotal}
+        />
       )}
 
       {props.page === PAGE.REVIEW_ORDER && (
