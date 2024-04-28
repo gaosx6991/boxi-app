@@ -150,7 +150,7 @@ export default () => {
   const height = useContext(ContainerHeightContext);
   return (
     <TopTab.Navigator contentStyle={{height}}>
-      <TopTab.Screen name="OnProgress" component={OnProgress} />
+      <TopTab.Screen name="On Progress" component={OnProgress} />
       <TopTab.Screen name="Complete" component={Complete} />
     </TopTab.Navigator>
   );

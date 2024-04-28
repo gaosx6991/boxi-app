@@ -4,7 +4,7 @@ import {ImageSourcePropType} from 'react-native/Libraries/Image/Image';
 
 type Props = {
   title?: string;
-  icon: ImageSourcePropType;
+  icon?: ImageSourcePropType;
   header: string;
   subHeader?: string;
   detail: string;
@@ -19,7 +19,7 @@ export default (props: Props) => {
         </Text>
       )}
       <View style={styles.container}>
-        <Image style={styles.icon} source={props.icon} />
+        {props.icon && <Image style={styles.icon} source={props.icon} />}
         <View style={styles.content}>
           <Text
             style={styles.headerTxt}

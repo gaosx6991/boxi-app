@@ -1,6 +1,14 @@
 // @ts-ignore
 import {API_URL} from 'react-native-dotenv';
 import {store} from '../store';
+import {buildQuery} from '../utils/query.ts';
+
+type RecipientForm = {
+  recipientName: string;
+  address: string;
+  postalZip: string;
+  phoneNumber: string;
+};
 
 export type CreateOrderRequest = {
   shipmentForm: {
@@ -10,26 +18,23 @@ export type CreateOrderRequest = {
     itemType: string;
     packageSize: string;
   };
-  recipientForm: {
-    recipientName: string;
-    address: string;
-    postalZip: string;
-    phoneNumber: string;
-  };
+  recipientForm: RecipientForm;
   boxiRegular: number;
   shippingAssurance: number;
   subtotal: number;
 };
 
+export type CourierInfo = {
+  id: string;
+  avatar: string;
+  accountName: string;
+  number: string;
+  phoneNumber: string;
+};
+
 export type CreateOrderResponse = {
   id: string;
-  courierInfo: {
-    id: string;
-    avatar: string;
-    accountName: string;
-    number: string;
-    phoneNumber: string;
-  };
+  courierInfo: CourierInfo;
 };
 
 export const createOrder = async (
@@ -44,6 +49,42 @@ export const createOrder = async (
     } as HeadersInit_ | undefined,
     body: JSON.stringify(request),
   });
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
+  return result.json();
+};
+
+export type GetOrderActivityListFilter = {
+  status: 'On Progress' | 'Complete';
+};
+
+export type GetOrderActivityListRequest = {
+  page: number;
+  pageSize: number;
+  filter: GetOrderActivityListFilter;
+};
+
+export type OrderActivity = {
+  id: string;
+  recipientForm: RecipientForm;
+};
+
+export type GetOrderActivityListResponse = OrderActivity[];
+
+export const getOrderActivityList = async (
+  request: GetOrderActivityListRequest,
+): Promise<GetOrderActivityListResponse> => {
+  const result = await fetch(
+    `${API_URL}/order/activity?${buildQuery(request)}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        authorization: store.getState().user.token,
+      } as HeadersInit_ | undefined,
+    },
+  );
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
