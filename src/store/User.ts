@@ -19,11 +19,14 @@ type Scene = 'CreateUser' | 'LoginByEmail' | 'LoginByPhoneNumber';
 
 interface UserState {
   id?: string;
+  avatar?: string;
   accountName?: string;
   email?: string;
   phoneNumber?: string;
   balance?: number;
   token?: string;
+  sendPackageCount?: number;
+  receivePackageCount?: number;
   error?: SerializedError;
   status: 'idle' | 'loading' | 'success' | 'failed';
   scene?: Scene;
@@ -58,11 +61,14 @@ function getReducer() {
   return (state: UserState, action: PayloadAction<LoginResponse>) => {
     state.status = 'success';
     state.id = action.payload.id;
+    state.avatar = action.payload.avatar;
     state.accountName = action.payload.accountName;
     state.email = action.payload.email;
     state.phoneNumber = action.payload.phoneNumber;
     state.balance = action.payload.balance;
     state.token = action.payload.token;
+    state.sendPackageCount = action.payload.sendPackageCount;
+    state.receivePackageCount = action.payload.receivePackageCount;
   };
 }
 
@@ -111,5 +117,11 @@ export const status = (state: RootState) => state.user.status;
 export const scene = (state: RootState) => state.user.scene;
 export const id = (state: RootState) => state.user.id;
 export const balance = (state: RootState) => state.user.balance;
+export const avatar = (state: RootState) => state.user.avatar;
+export const sendPackageCount = (state: RootState) =>
+  state.user.sendPackageCount;
+export const receivePackageCount = (state: RootState) =>
+  state.user.receivePackageCount;
+export const accountName = (state: RootState) => state.user.accountName;
 
 export default userSlice.reducer;

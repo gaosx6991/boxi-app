@@ -25,11 +25,14 @@ export type LoginByEmailRequest = {
 
 export type LoginResponse = {
   id?: string;
+  avatar?: string;
   accountName?: string;
   email?: string;
   phoneNumber?: string;
   balance?: number;
   token?: string;
+  sendPackageCount?: number;
+  receivePackageCount?: number;
 };
 
 export const loginByEmail = async (
