@@ -10,6 +10,14 @@ import Input from '../../../components/Input.tsx';
 import PrimaryButton from '../../../components/PrimaryButton.tsx';
 import {validatePassword} from '../../../utils/validate.ts';
 import {ModalScreenRefContext} from '../../../components/ModalScreenContext.ts';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {
+  scene,
+  setScene,
+  status,
+  updateUserPasswordAsync,
+} from '../../../store/User.ts';
+import Toast from 'react-native-toast-message';
 
 export default () => {
   const [currentPassword, setCurrentPassword] = useState<string>('');
@@ -97,9 +105,28 @@ export default () => {
 
   const ref = useContext(ModalScreenRefContext);
 
+  const dispatch = useAppDispatch();
+
   const handlePress = useCallback(() => {
-    ref.current?.hide();
-  }, [ref]);
+    dispatch(setScene('UpdateUserPassword'));
+
+    dispatch(updateUserPasswordAsync({currentPassword, newPassword}));
+  }, [dispatch, currentPassword, newPassword]);
+
+  const statusValue = useAppSelector(status);
+  const sceneValue = useAppSelector(scene);
+
+  useEffect(() => {
+    if (statusValue === 'success' && sceneValue === 'UpdateUserPassword') {
+      Toast.show({
+        type: 'success',
+        text1: 'User password updated',
+        text2: 'Please enjoy',
+      });
+
+      ref.current?.hide();
+    }
+  }, [statusValue, sceneValue, ref]);
 
   return (
     <>

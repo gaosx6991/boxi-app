@@ -12,14 +12,21 @@ import {
 } from 'redux-persist/es/constants';
 import userReducer from './User';
 import orderReducer from './Order';
+import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
 export const LOG_OUT = 'LOG_OUT';
 
 export const STORAGE_KEY = 'boxi';
 
+const saveSubsetBlacklistFilter = createBlacklistFilter('user', [
+  'status',
+  'scene',
+]);
+
 const persistConfig = {
   key: STORAGE_KEY,
   storage: AsyncStorage,
+  transforms: [saveSubsetBlacklistFilter],
   whitelist: ['user'],
 };
 

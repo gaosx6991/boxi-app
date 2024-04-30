@@ -12,10 +12,16 @@ import {
   loginByPhoneNumber,
   LoginByPhoneNumberRequest,
   LoginResponse,
+  updateUserPassword,
+  UpdateUserPasswordRequest,
 } from '../apis/User.ts';
 import {RootState} from './index.ts';
 
-type Scene = 'CreateUser' | 'LoginByEmail' | 'LoginByPhoneNumber';
+type Scene =
+  | 'CreateUser'
+  | 'LoginByEmail'
+  | 'LoginByPhoneNumber'
+  | 'UpdateUserPassword';
 
 interface UserState {
   id?: string;
@@ -55,6 +61,13 @@ export const loginByPhoneNumberAsync = createAsyncThunk<
   LoginByPhoneNumberRequest
 >('user/loginByPhoneNumber', async request => {
   return await loginByPhoneNumber(request);
+});
+
+export const updateUserPasswordAsync = createAsyncThunk<
+  void,
+  UpdateUserPasswordRequest
+>('user/updateUserPassword', async request => {
+  await updateUserPassword(request);
 });
 
 function getReducer() {
@@ -107,7 +120,17 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.error;
       })
-      .addCase(loginByPhoneNumberAsync.fulfilled, getReducer());
+      .addCase(loginByPhoneNumberAsync.fulfilled, getReducer())
+      .addCase(updateUserPasswordAsync.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserPasswordAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      .addCase(updateUserPasswordAsync.fulfilled, state => {
+        state.status = 'success';
+      });
   },
 });
 

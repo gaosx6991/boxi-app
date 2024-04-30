@@ -9,6 +9,7 @@ import React, {
 import {Modal} from 'react-native';
 import {ModalScreenRef} from '../types';
 import ModalScreenHeader from './ModalScreenHeader.tsx';
+import Toast from 'react-native-toast-message';
 
 type Props = PropsWithChildren & {
   title: string;
@@ -37,6 +38,7 @@ export default forwardRef((props: Props, ref: ForwardedRef<ModalScreenRef>) => {
       onRequestClose={hide}>
       <ModalScreenHeader onClosePress={hide} title={props.title} />
       {props.children}
+      <Toast />
     </Modal>
   );
 });

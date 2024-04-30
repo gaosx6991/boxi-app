@@ -1,5 +1,6 @@
 // @ts-ignore
 import {API_URL} from 'react-native-dotenv';
+import {store} from '../store';
 
 export type CreateUserRequest = {
   accountName?: string;
@@ -72,4 +73,29 @@ export const loginByPhoneNumber = async (
     throw new Error(await result.text());
   }
   return result.json();
+};
+
+export type UpdateUserPasswordRequest = {
+  currentPassword: string;
+  newPassword: string;
+};
+
+export const updateUserPassword = async (
+  request: UpdateUserPasswordRequest,
+): Promise<void> => {
+  const result = await fetch(
+    `${API_URL}/user/${store.getState().user.id}/password`,
+    {
+      method: 'PATCH',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: store.getState().user.token,
+      } as HeadersInit_,
+      body: JSON.stringify(request),
+    },
+  );
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
 };
