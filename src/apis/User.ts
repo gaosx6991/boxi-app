@@ -83,18 +83,37 @@ export type UpdateUserPasswordRequest = {
 export const updateUserPassword = async (
   request: UpdateUserPasswordRequest,
 ): Promise<void> => {
-  const result = await fetch(
-    `${API_URL}/user/${store.getState().user.id}/password`,
-    {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: store.getState().user.token,
-      } as HeadersInit_,
-      body: JSON.stringify(request),
-    },
-  );
+  const result = await fetch(`${API_URL}/user/password`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: store.getState().user.token,
+    } as HeadersInit_,
+    body: JSON.stringify(request),
+  });
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
+};
+
+export type UpdateUserRequest = {
+  avatar?: string;
+  accountName?: string;
+  phoneNumber?: string;
+  email?: string;
+};
+
+export const updateUser = async (request: UpdateUserRequest): Promise<void> => {
+  const result = await fetch(`${API_URL}/user`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: store.getState().user.token,
+    } as HeadersInit_,
+    body: JSON.stringify(request),
+  });
   if (result.status !== 200) {
     throw new Error(await result.text());
   }

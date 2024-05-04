@@ -6,10 +6,18 @@ import profile_avatar from '../../../assets/mock/profile_avatar.png';
 // @ts-ignore
 import camera from '../../../assets/camera.png';
 
-export default () => {
+type Props = {
+  avatar: string;
+  setAvatar: (avatar: string) => void;
+};
+
+export default ({avatar}: Props) => {
   return (
     <TouchableOpacity style={styles.root} activeOpacity={0.7}>
-      <Image style={styles.avatar} source={profile_avatar} />
+      <Image
+        style={styles.avatar}
+        source={avatar ? {uri: avatar} : profile_avatar}
+      />
       <View style={styles.fab}>
         <Image style={styles.icon} source={camera} />
       </View>
@@ -27,6 +35,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: '100%',
     height: '100%',
+    borderRadius: 16,
     resizeMode: 'cover',
   },
   fab: {

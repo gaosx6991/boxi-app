@@ -7,11 +7,23 @@ import {
   validatePhoneNumber,
 } from '../../../utils/validate.ts';
 
-export default () => {
-  const [accountName, setAccountName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
+type Props = {
+  accountName: string;
+  setAccountName: (accountName: string) => void;
+  phoneNumber: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+  email: string;
+  setEmail: (email: string) => void;
+};
 
+export default ({
+  accountName,
+  setAccountName,
+  phoneNumber,
+  setPhoneNumber,
+  email,
+  setEmail,
+}: Props) => {
   const [phoneNumberValid, setPhoneNumberValid] = useState<boolean>(true);
   const [accountNameValid, setAccountNameValid] = useState<boolean>(true);
   const [emailValid, setEmailValid] = useState<boolean>(true);
@@ -21,44 +33,55 @@ export default () => {
   const [accountNameErrMsg, setAccountNameValidErrMsg] = useState<string>('');
   const [emailValidErrMsg, setEmailValidErrMsg] = useState<string>('');
 
-  const handlePhoneNumberValueChange = useCallback((value: string) => {
-    setPhoneNumber(value);
+  const handlePhoneNumberValueChange = useCallback(
+    (value: string) => {
+      setPhoneNumber(value);
 
-    const errMsg = validatePhoneNumber(value);
-    if (errMsg) {
-      setPhoneNumberValid(false);
-      setPhoneNumberValidErrMsg(errMsg);
-    } else {
-      setPhoneNumberValid(true);
-    }
-  }, []);
-  const handleAccountNameValueChange = useCallback((value: string) => {
-    setAccountName(value);
+      const errMsg = validatePhoneNumber(value);
+      if (errMsg) {
+        setPhoneNumberValid(false);
+        setPhoneNumberValidErrMsg(errMsg);
+      } else {
+        setPhoneNumberValid(true);
+      }
+    },
+    [setPhoneNumber],
+  );
+  const handleAccountNameValueChange = useCallback(
+    (value: string) => {
+      setAccountName(value);
 
-    const errMsg = validateAccountName(value);
-    if (errMsg) {
-      setAccountNameValid(false);
-      setAccountNameValidErrMsg(errMsg);
-    } else {
-      setAccountNameValid(true);
-    }
-  }, []);
-  const handleEmailValueChange = useCallback((value: string) => {
-    setEmail(value);
+      const errMsg = validateAccountName(value);
+      if (errMsg) {
+        setAccountNameValid(false);
+        setAccountNameValidErrMsg(errMsg);
+      } else {
+        setAccountNameValid(true);
+      }
+    },
+    [setAccountName],
+  );
+  const handleEmailValueChange = useCallback(
+    (value: string) => {
+      setEmail(value);
 
-    const errMsg = validateEmail(value);
-    if (errMsg) {
-      setEmailValid(false);
-      setEmailValidErrMsg(errMsg);
-    } else {
-      setEmailValid(true);
-    }
-  }, []);
+      const errMsg = validateEmail(value);
+      if (errMsg) {
+        setEmailValid(false);
+        setEmailValidErrMsg(errMsg);
+      } else {
+        setEmailValid(true);
+      }
+    },
+    [setEmail],
+  );
 
   useEffect(() => {
     handlePhoneNumberValueChange(phoneNumber);
     handleAccountNameValueChange(accountName);
     handleEmailValueChange(email);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

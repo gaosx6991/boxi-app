@@ -12,8 +12,10 @@ import {
   loginByPhoneNumber,
   LoginByPhoneNumberRequest,
   LoginResponse,
+  updateUser,
   updateUserPassword,
   UpdateUserPasswordRequest,
+  UpdateUserRequest,
 } from '../apis/User.ts';
 import {RootState} from './index.ts';
 
@@ -21,7 +23,8 @@ type Scene =
   | 'CreateUser'
   | 'LoginByEmail'
   | 'LoginByPhoneNumber'
-  | 'UpdateUserPassword';
+  | 'UpdateUserPassword'
+  | 'UpdateUser';
 
 interface UserState {
   id?: string;
@@ -70,6 +73,13 @@ export const updateUserPasswordAsync = createAsyncThunk<
   await updateUserPassword(request);
 });
 
+export const updateUserAsync = createAsyncThunk<void, UpdateUserRequest>(
+  'user/updateUser',
+  async request => {
+    await updateUser(request);
+  },
+);
+
 function getReducer() {
   return (state: UserState, action: PayloadAction<LoginResponse>) => {
     state.status = 'success';
@@ -89,8 +99,26 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    resetScene: state => {
+      state.scene = undefined;
+    },
+    resetStatus: state => {
+      state.status = 'idle';
+    },
     setScene: (state, action: PayloadAction<Scene>) => {
       state.scene = action.payload;
+    },
+    setAvatar: (state, action: PayloadAction<string>) => {
+      state.avatar = action.payload;
+    },
+    setAccountName: (state, action: PayloadAction<string>) => {
+      state.accountName = action.payload;
+    },
+    setPhoneNumber: (state, action: PayloadAction<string>) => {
+      state.phoneNumber = action.payload;
+    },
+    setEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
     },
   },
   extraReducers: builder => {
@@ -130,11 +158,29 @@ export const userSlice = createSlice({
       })
       .addCase(updateUserPasswordAsync.fulfilled, state => {
         state.status = 'success';
+      })
+      .addCase(updateUserAsync.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      .addCase(updateUserAsync.fulfilled, state => {
+        state.status = 'success';
       });
   },
 });
 
-export const {setScene} = userSlice.actions;
+export const {
+  resetScene,
+  resetStatus,
+  setScene,
+  setAvatar,
+  setAccountName,
+  setPhoneNumber,
+  setEmail,
+} = userSlice.actions;
 
 export const status = (state: RootState) => state.user.status;
 export const scene = (state: RootState) => state.user.scene;
@@ -146,5 +192,7 @@ export const sendPackageCount = (state: RootState) =>
 export const receivePackageCount = (state: RootState) =>
   state.user.receivePackageCount;
 export const accountName = (state: RootState) => state.user.accountName;
+export const phoneNumber = (state: RootState) => state.user.phoneNumber;
+export const email = (state: RootState) => state.user.email;
 
 export default userSlice.reducer;

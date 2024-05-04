@@ -21,6 +21,7 @@ type Props = {
   rightButtonIcon?: ImageSourcePropType;
   rightButtonLabel?: string;
   rightButtonPress?: () => void;
+  onBackPress?: () => void;
   styles?: StyleProp<ViewStyle>;
 };
 
@@ -29,7 +30,9 @@ export default (props: Props) => {
 
   const handleBackPress = useCallback(() => {
     navigation.goBack();
-  }, [navigation]);
+
+    props.onBackPress?.();
+  }, [navigation, props]);
 
   return (
     <View style={[styles.root, props.styles]}>
@@ -38,7 +41,7 @@ export default (props: Props) => {
           style={styles.backBtn}
           activeOpacity={0.7}
           onPress={handleBackPress}>
-          <Image style={styles.backBtnImg} source={back}></Image>
+          <Image style={styles.backBtnImg} source={back} />
         </TouchableOpacity>
       )}
 
