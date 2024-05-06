@@ -12,6 +12,7 @@ import {
 } from 'redux-persist/es/constants';
 import userReducer from './User';
 import orderReducer from './Order';
+import uploadReducer from './Upload';
 import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
 export const LOG_OUT = 'LOG_OUT';
@@ -33,6 +34,7 @@ const persistConfig = {
 const appReducer = combineReducers({
   user: userReducer,
   order: orderReducer,
+  upload: uploadReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

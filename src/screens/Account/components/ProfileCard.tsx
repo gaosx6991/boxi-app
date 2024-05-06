@@ -1,3 +1,5 @@
+// @ts-ignore
+import {API_URL} from 'react-native-dotenv';
 import React, {useCallback} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
@@ -22,7 +24,7 @@ export default () => {
     <View style={styles.root}>
       <TouchableOpacity activeOpacity={0.7}>
         <Image
-          source={avatarValue ? {uri: avatarValue} : profile_avatar}
+          source={avatarValue ? {uri: API_URL + avatarValue} : profile_avatar}
           style={styles.avatar}
         />
       </TouchableOpacity>

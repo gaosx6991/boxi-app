@@ -11,8 +11,8 @@ import {
   avatar as avatarStore,
   email as emailStore,
   phoneNumber as phoneNumberStore,
-  resetScene,
-  resetStatus,
+  resetScene as resetUserScene,
+  resetStatus as resetUserStatus,
   scene,
   setAccountName as setAccountNameValue,
   setAvatar as setAvatarValue,
@@ -22,6 +22,10 @@ import {
   status,
   updateUserAsync,
 } from '../../store/User.ts';
+import {
+  resetScene as resetUploadScene,
+  resetStatus as resetUploadStatus,
+} from '../../store/Upload.ts';
 
 export default () => {
   const avatarValue = useAppSelector(avatarStore);
@@ -66,8 +70,10 @@ export default () => {
   ]);
 
   const handleBackPress = useCallback(() => {
-    dispatch(resetStatus());
-    dispatch(resetScene());
+    dispatch(resetUserStatus());
+    dispatch(resetUserScene());
+    dispatch(resetUploadStatus());
+    dispatch(resetUploadScene());
   }, [dispatch]);
 
   return (

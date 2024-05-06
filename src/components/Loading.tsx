@@ -6,17 +6,26 @@ import Toast from 'react-native-toast-message';
 import {store} from '../store';
 import {useAppSelector} from '../hooks';
 import {status as orderStatusValue} from '../store/Order.ts';
+import {status as uploadStatusValue} from '../store/Upload.ts';
 
 export default () => {
   const userStatus = useAppSelector(userStatusValue);
   const orderStatus = useAppSelector(orderStatusValue);
+  const uploadStatus = useAppSelector(uploadStatusValue);
   const visible = useMemo<boolean>(
-    () => userStatus === 'loading' || orderStatus === 'loading',
-    [userStatus, orderStatus],
+    () =>
+      userStatus === 'loading' ||
+      orderStatus === 'loading' ||
+      uploadStatus === 'loading',
+    [userStatus, orderStatus, uploadStatus],
   );
 
   useEffect(() => {
-    if (userStatus !== 'failed' && orderStatus !== 'failed') {
+    if (
+      userStatus !== 'failed' &&
+      orderStatus !== 'failed' &&
+      uploadStatus !== 'failed'
+    ) {
       return;
     }
 
@@ -38,8 +47,17 @@ export default () => {
         text1: title,
         text2: message,
       });
+    } else if (uploadStatus === 'failed') {
+      const title = store.getState().upload.error?.name as string;
+      const message = store.getState().upload.error?.message as string;
+
+      Toast.show({
+        type: 'error',
+        text1: title,
+        text2: message,
+      });
     }
-  }, [userStatus, orderStatus]);
+  }, [userStatus, orderStatus, uploadStatus]);
 
   return (
     <Modal
