@@ -13,6 +13,7 @@ import {
 import userReducer from './User';
 import orderReducer from './Order';
 import uploadReducer from './Upload';
+import notificationReducer from './Notification';
 import {createBlacklistFilter} from 'redux-persist-transform-filter';
 
 export const LOG_OUT = 'LOG_OUT';
@@ -35,6 +36,7 @@ const appReducer = combineReducers({
   user: userReducer,
   order: orderReducer,
   upload: uploadReducer,
+  notification: notificationReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

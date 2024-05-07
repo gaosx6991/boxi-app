@@ -69,20 +69,22 @@ function getOnProgressOrderActivityListAsyncReducer() {
     state: OrderState,
     action: PayloadAction<GetOrderActivityListResponse>,
   ) => {
-    state.status = 'success';
+    if (action.payload.length) {
+      if (state.onProgressActivityListPage === 1) {
+        state.onProgressOrderActivityList = action.payload;
+      } else {
+        state.onProgressOrderActivityList = [
+          ...(state.onProgressOrderActivityList as GetOrderActivityListResponse),
+          ...action.payload,
+        ];
+      }
 
-    const payload = action.payload;
-
-    if (state.onProgressActivityListPage === 1 && payload.length) {
-      state.onProgressOrderActivityList = payload;
       state.onProgressActivityListPage += 1;
-    } else if (payload.length) {
-      state.onProgressOrderActivityList = [
-        ...(state.onProgressOrderActivityList as GetOrderActivityListResponse),
-        ...payload,
-      ];
-      state.onProgressActivityListPage += 1;
+    } else if (state.onProgressActivityListPage === 1) {
+      state.onProgressOrderActivityList = [];
     }
+
+    state.status = 'success';
   };
 }
 
@@ -107,20 +109,22 @@ function getCompleteOrderActivityListAsyncReducer() {
     state: OrderState,
     action: PayloadAction<GetOrderActivityListResponse>,
   ) => {
-    state.status = 'success';
+    if (action.payload.length) {
+      if (state.completeActivityListPage === 1) {
+        state.completeOrderActivityList = action.payload;
+      } else {
+        state.completeOrderActivityList = [
+          ...(state.completeOrderActivityList as GetOrderActivityListResponse),
+          ...action.payload,
+        ];
+      }
 
-    const payload = action.payload;
-
-    if (state.completeActivityListPage === 1 && payload.length) {
-      state.completeOrderActivityList = payload;
       state.completeActivityListPage += 1;
-    } else if (payload.length) {
-      state.completeOrderActivityList = [
-        ...(state.completeOrderActivityList as GetOrderActivityListResponse),
-        ...payload,
-      ];
-      state.completeActivityListPage += 1;
+    } else if (state.completeActivityListPage === 1) {
+      state.completeOrderActivityList = [];
     }
+
+    state.status = 'success';
   };
 }
 

@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
   titleTxt: {
     fontWeight: 'bold',
     fontSize: 14,
+    color: '#000000',
   },
 });
