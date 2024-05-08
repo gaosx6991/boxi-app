@@ -16,6 +16,7 @@ export type Notification = {
   content: string;
   timestamp: number;
   type: string;
+  cover?: string;
 };
 
 export type GetNotificationListResponse = Notification[];
@@ -34,4 +35,28 @@ export const getNotificationList = async (
     throw new Error(await result.text());
   }
   return result.json();
+};
+
+export type UpdateNotificationListRequest = {
+  id?: string;
+  isNew: boolean;
+};
+
+export const updateNotification = async (
+  request: UpdateNotificationListRequest,
+): Promise<void> => {
+  const notificationId = request.id;
+  delete request.id;
+  const result = await fetch(`${API_URL}/notification/${notificationId}`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      authorization: store.getState().user.token,
+    } as HeadersInit_ | undefined,
+    body: JSON.stringify(request),
+  });
+  if (result.status !== 200) {
+    throw new Error(await result.text());
+  }
 };

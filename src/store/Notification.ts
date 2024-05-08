@@ -8,11 +8,14 @@ import {RootState} from './index.ts';
 import {
   getNotificationList,
   GetNotificationListResponse,
+  updateNotification,
+  UpdateNotificationListRequest,
 } from '../apis/Notification.ts';
 
-type Scene = 'GetNotificationList';
+type Scene = 'GetNotificationList' | 'UpdateNotification';
 
 interface NotificationState {
+  currentNotificationId?: string;
   notificationList?: GetNotificationListResponse;
   page: number;
   pageSize: number;
@@ -63,6 +66,13 @@ function getNotificationListAsyncReducer() {
   };
 }
 
+export const updateNotificationAsync = createAsyncThunk<
+  void,
+  UpdateNotificationListRequest
+>('notification/updateNotification', async request => {
+  await updateNotification(request);
+});
+
 export const notificationSlice = createSlice({
   name: 'notification',
   initialState,
@@ -75,6 +85,20 @@ export const notificationSlice = createSlice({
     },
     resetPage: state => {
       state.page = 1;
+    },
+    setCurrentNotificationId: (state, action: PayloadAction<string>) => {
+      state.currentNotificationId = action.payload;
+    },
+    updateNotificationList: (
+      state,
+      action: PayloadAction<UpdateNotificationListRequest>,
+    ) => {
+      state.notificationList = state.notificationList!.map(item => {
+        if (item.id === action.payload.id) {
+          item.isNew = action.payload.isNew;
+        }
+        return item;
+      });
     },
   },
   extraReducers: builder => {
@@ -90,11 +114,28 @@ export const notificationSlice = createSlice({
       .addCase(
         getNotificationListAsync.fulfilled,
         getNotificationListAsyncReducer(),
-      );
+      )
+      .addCase(updateNotificationAsync.pending, state => {
+        state.status = 'loading';
+        state.scene = 'UpdateNotification';
+      })
+      .addCase(updateNotificationAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error;
+      })
+      .addCase(updateNotificationAsync.fulfilled, state => {
+        state.status = 'success';
+      });
   },
 });
 
-export const {resetPage, resetStatus, resetScene} = notificationSlice.actions;
+export const {
+  resetPage,
+  resetStatus,
+  resetScene,
+  setCurrentNotificationId,
+  updateNotificationList,
+} = notificationSlice.actions;
 
 export const status = (state: RootState) => state.notification.status;
 export const scene = (state: RootState) => state.notification.scene;

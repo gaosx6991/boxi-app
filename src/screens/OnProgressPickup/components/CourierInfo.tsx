@@ -26,7 +26,7 @@ export default () => {
 
   return (
     <View style={styles.root}>
-      <Image style={styles.avatar} source={courier} />
+      <Image style={styles.avatar} source={{uri: courierInfoValue.avatar}} />
       <View style={styles.info}>
         <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode={'tail'}>
           {courierInfoValue?.accountName}

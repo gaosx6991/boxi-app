@@ -1,5 +1,5 @@
 import {SectionList, StyleSheet} from 'react-native';
-import Item, {ItemProps} from './Item.tsx';
+import Item from './Item.tsx';
 import React, {useCallback, useEffect, useMemo} from 'react';
 import Header from './Header.tsx';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
@@ -13,13 +13,13 @@ import {
   status,
 } from '../../../store/Notification.ts';
 import {GetNotificationListResponse} from '../../../apis/Notification.ts';
-import {MillisecondTimestamp} from '../../../types';
+import {MillisecondTimestamp, NotificationItemProps} from '../../../types';
 import Toast from 'react-native-toast-message';
 import {store} from '../../../store';
 
 export type ListProps = {
   title: string;
-  data: ItemProps[];
+  data: NotificationItemProps[];
 };
 
 export default () => {
@@ -53,7 +53,7 @@ export default () => {
   }, [statusValue]);
 
   const renderItem = useCallback(
-    ({item}: {item: ItemProps}) => <Item item={item} />,
+    ({item}: {item: NotificationItemProps}) => <Item item={item} />,
     [],
   );
 
@@ -62,7 +62,7 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    if (statusValue === 'failed' || statusValue === 'GetNotificationList') {
+    if (statusValue === 'failed' && sceneValue === 'GetNotificationList') {
       const error = store.getState().notification.error;
       Toast.show({
         type: 'error',

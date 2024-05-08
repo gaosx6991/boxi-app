@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {
   StyleProp,
   StyleSheet,
@@ -7,21 +7,21 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {MillisecondTimestamp, ModalScreenRef} from '../../../types';
+import {ModalScreenRef, NotificationItemProps} from '../../../types';
 import {formatTimeAgo} from '../../../utils/datetime.ts';
 import NotificationDetail from '../../NotificationDetail/NotificationDetail.tsx';
-
-export type ItemProps = {
-  id: string;
-  title: string;
-  isNew?: boolean;
-  content: string;
-  type: 'Normal' | 'Update';
-  timestamp: MillisecondTimestamp;
-};
+import {
+  scene,
+  setCurrentNotificationId,
+  status,
+  updateNotificationAsync,
+  updateNotificationList,
+} from '../../../store/Notification.ts';
+import {useAppDispatch, useAppSelector} from '../../../hooks';
+import {store} from '../../../store';
 
 type Props = {
-  item: ItemProps;
+  item: NotificationItemProps;
 };
 
 export default ({item: props}: Props) => {
@@ -31,9 +31,30 @@ export default ({item: props}: Props) => {
 
   const ref = useRef<ModalScreenRef>(null);
 
+  const dispatch = useAppDispatch();
+
   const handlePress = useCallback(() => {
     ref.current?.show();
-  }, [ref]);
+
+    if (!props.isNew) {
+      return;
+    }
+    dispatch(setCurrentNotificationId(props.id));
+    dispatch(updateNotificationAsync({id: props.id, isNew: false}));
+  }, [ref, props.isNew, props.id]);
+
+  const sceneValue = useAppSelector(scene);
+  const statusValue = useAppSelector(status);
+
+  useEffect(() => {
+    if (
+      sceneValue === 'UpdateNotification' &&
+      statusValue === 'success' &&
+      store.getState().notification.currentNotificationId === props.id
+    ) {
+      dispatch(updateNotificationList({id: props.id, isNew: false}));
+    }
+  }, [sceneValue, statusValue, props.id]);
 
   return (
     <TouchableOpacity
@@ -60,7 +81,7 @@ export default ({item: props}: Props) => {
         </Text>
       )}
 
-      <NotificationDetail ref={ref} title={props.title} type={props.type} />
+      <NotificationDetail ref={ref} item={props} />
     </TouchableOpacity>
   );
 };

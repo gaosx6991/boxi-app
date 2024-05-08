@@ -31,3 +31,13 @@ export interface ModalScreenRef {
   show: () => void;
   hide: () => void;
 }
+
+export type NotificationItemProps = {
+  id: string;
+  title: string;
+  isNew?: boolean;
+  content: string;
+  type: 'Normal' | 'Update';
+  timestamp: MillisecondTimestamp;
+  cover?: string;
+};
