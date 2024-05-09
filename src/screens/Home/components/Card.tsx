@@ -3,11 +3,11 @@ import {StyleSheet, View} from 'react-native';
 
 import CardItem, {Props as ItemProps} from './CardItem.tsx';
 // @ts-ignore
-import promo_banner from '../../../assets/promo_banner.png';
-// @ts-ignore
 import explore_banner from '../../../assets/explore_banner.png';
 import PromoDetail from '../../PromoDetail/PromoDetail.tsx';
 import {ModalScreenRef} from '../../../types';
+import {useAppSelector} from '../../../hooks';
+import {promoToday} from '../../../store/Promo.ts';
 
 export default () => {
   const ref = useRef<ModalScreenRef>(null);
@@ -15,20 +15,31 @@ export default () => {
     ref.current?.show();
   }, [ref]);
 
+  const promoTodayValue = useAppSelector(promoToday);
+
   const items: ItemProps[] = useMemo(
-    () => [
-      {
-        title: 'Promo’s Today',
-        banner: promo_banner,
-        onViewAllPress: handlePromoPress,
-      },
-      {
-        title: 'Explore Boxi',
-        banner: explore_banner,
-        onViewAllPress: () => {},
-      },
-    ],
-    [handlePromoPress],
+    () =>
+      promoTodayValue
+        ? [
+            {
+              title: 'Promo’s Today',
+              banner: {uri: promoTodayValue.cover},
+              onViewAllPress: handlePromoPress,
+            },
+            {
+              title: 'Explore Boxi',
+              banner: explore_banner,
+              onViewAllPress: () => {},
+            },
+          ]
+        : [
+            {
+              title: 'Explore Boxi',
+              banner: explore_banner,
+              onViewAllPress: () => {},
+            },
+          ],
+    [handlePromoPress, promoTodayValue],
   );
 
   return (
