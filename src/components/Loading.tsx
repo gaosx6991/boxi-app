@@ -8,19 +8,22 @@ import {useAppSelector} from '../hooks';
 import {status as orderStatusValue} from '../store/Order.ts';
 import {status as uploadStatusValue} from '../store/Upload.ts';
 import {status as promoStatusValue} from '../store/Promo.ts';
+import {status as balanceStatusValue} from '../store/Balance.ts';
 
 export default () => {
   const userStatus = useAppSelector(userStatusValue);
   const orderStatus = useAppSelector(orderStatusValue);
   const uploadStatus = useAppSelector(uploadStatusValue);
   const promoStatus = useAppSelector(promoStatusValue);
+  const balanceStatus = useAppSelector(balanceStatusValue);
   const visible = useMemo<boolean>(
     () =>
       userStatus === 'loading' ||
       orderStatus === 'loading' ||
       uploadStatus === 'loading' ||
-      promoStatus === 'loading',
-    [userStatus, orderStatus, uploadStatus, promoStatus],
+      promoStatus === 'loading' ||
+      balanceStatus === 'loading',
+    [userStatus, orderStatus, uploadStatus, promoStatus, balanceStatus],
   );
 
   useEffect(() => {
@@ -69,8 +72,17 @@ export default () => {
         text1: title,
         text2: message,
       });
+    } else if (balanceStatus === 'failed') {
+      const title = store.getState().balance.error?.name as string;
+      const message = store.getState().balance.error?.message as string;
+
+      Toast.show({
+        type: 'error',
+        text1: title,
+        text2: message,
+      });
     }
-  }, [userStatus, orderStatus, uploadStatus, promoStatus]);
+  }, [userStatus, orderStatus, uploadStatus, promoStatus, balanceStatus]);
 
   return (
     <Modal

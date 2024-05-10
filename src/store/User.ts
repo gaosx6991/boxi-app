@@ -120,6 +120,9 @@ export const userSlice = createSlice({
     setEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload;
     },
+    setBalance: (state, action: PayloadAction<number>) => {
+      state.balance = action.payload;
+    },
   },
   extraReducers: builder => {
     builder
@@ -180,6 +183,7 @@ export const {
   setAccountName,
   setPhoneNumber,
   setEmail,
+  setBalance,
 } = userSlice.actions;
 
 export const status = (state: RootState) => state.user.status;

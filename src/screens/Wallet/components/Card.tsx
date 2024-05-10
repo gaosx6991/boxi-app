@@ -1,14 +1,18 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 // @ts-ignore
 import add from '../../../assets/add.png';
 import PaymentMethod from '../../PaymentMethod/PaymentMethod.tsx';
 import {ModalScreenRef} from '../../../types';
+import {useAppDispatch} from '../../../hooks';
+import {resetScene, resetStatus} from '../../../store/Balance.ts';
 
 type Props = {
   balance: string;
 };
+
+const amount = 249;
 
 export default (props: Props) => {
   const paymentRef = useRef<ModalScreenRef>(null);
@@ -16,6 +20,14 @@ export default (props: Props) => {
   const handleTopUpPress = useCallback(() => {
     paymentRef.current?.show();
   }, [paymentRef]);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    return () => {
+      dispatch(resetScene());
+      dispatch(resetStatus());
+    };
+  }, []);
 
   return (
     <View style={styles.root}>
@@ -36,7 +48,7 @@ export default (props: Props) => {
         <Text style={styles.topUpTxt}>Top Up</Text>
       </TouchableOpacity>
 
-      <PaymentMethod ref={paymentRef} amount={(249).toLocaleString()} />
+      <PaymentMethod ref={paymentRef} amount={amount} />
     </View>
   );
 };
