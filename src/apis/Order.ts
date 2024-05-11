@@ -52,7 +52,7 @@ export const createOrder = async (
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
-  return result.json();
+  return await result.json();
 };
 
 export type GetOrderActivityListFilter = {
@@ -88,5 +88,5 @@ export const getOrderActivityList = async (
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
-  return result.json();
+  return await result.json();
 };

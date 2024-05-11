@@ -50,7 +50,7 @@ export const loginByEmail = async (
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
-  return result.json();
+  return await result.json();
 };
 
 export type LoginByPhoneNumberRequest = {
@@ -72,7 +72,7 @@ export const loginByPhoneNumber = async (
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
-  return result.json();
+  return await result.json();
 };
 
 export type UpdateUserPasswordRequest = {

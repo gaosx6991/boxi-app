@@ -8,7 +8,10 @@ import {useAppSelector} from '../hooks';
 import {status as orderStatusValue} from '../store/Order.ts';
 import {status as uploadStatusValue} from '../store/Upload.ts';
 import {status as promoStatusValue} from '../store/Promo.ts';
-import {status as balanceStatusValue} from '../store/Balance.ts';
+import {
+  scene as balanceSceneValue,
+  status as balanceStatusValue,
+} from '../store/Balance.ts';
 
 export default () => {
   const userStatus = useAppSelector(userStatusValue);
@@ -16,14 +19,22 @@ export default () => {
   const uploadStatus = useAppSelector(uploadStatusValue);
   const promoStatus = useAppSelector(promoStatusValue);
   const balanceStatus = useAppSelector(balanceStatusValue);
+  const balanceScene = useAppSelector(balanceSceneValue);
   const visible = useMemo<boolean>(
     () =>
       userStatus === 'loading' ||
       orderStatus === 'loading' ||
       uploadStatus === 'loading' ||
       promoStatus === 'loading' ||
-      balanceStatus === 'loading',
-    [userStatus, orderStatus, uploadStatus, promoStatus, balanceStatus],
+      (balanceStatus === 'loading' && balanceScene === 'TopUp'),
+    [
+      userStatus,
+      orderStatus,
+      uploadStatus,
+      promoStatus,
+      balanceStatus,
+      balanceScene,
+    ],
   );
 
   useEffect(() => {
@@ -31,7 +42,8 @@ export default () => {
       userStatus !== 'failed' &&
       orderStatus !== 'failed' &&
       uploadStatus !== 'failed' &&
-      promoStatus !== 'failed'
+      promoStatus !== 'failed' &&
+      balanceStatus !== 'failed'
     ) {
       return;
     }

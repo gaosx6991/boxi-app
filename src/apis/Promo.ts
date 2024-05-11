@@ -17,5 +17,5 @@ export const getPromoToday = async (): Promise<GetPromoTodayResponse> => {
   if (result.status !== 200) {
     throw new Error(await result.text());
   }
-  return result.json();
+  return await result.json();
 };

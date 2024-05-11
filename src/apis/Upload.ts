@@ -29,5 +29,5 @@ export const uploadFile = async (
     throw new Error(await result.text());
   }
 
-  return result.json();
+  return await result.json();
 };

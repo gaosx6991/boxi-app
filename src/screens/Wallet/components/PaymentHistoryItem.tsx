@@ -13,19 +13,12 @@ import {
 import up_arrow from '../../../assets/up_arrow.png';
 // @ts-ignore
 import down_arrow from '../../../assets/down_arrow.png';
-import {MillisecondTimestamp} from '../../../types';
 import {formatUnixTimestampToDateString} from '../../../utils/datetime.ts';
-
-export type ItemProps = {
-  title: string;
-  description: string;
-  amount: number;
-  direction: 'Pay Out' | 'Pay In';
-  timestamp: MillisecondTimestamp;
-};
+import {PaymentHistoryListItem} from '../../../apis/Balance.ts';
+import {MillisecondTimestamp} from '../../../types';
 
 type Props = {
-  item: ItemProps;
+  item: PaymentHistoryListItem;
 };
 
 export default ({item: props}: Props) => {
@@ -65,7 +58,9 @@ export default ({item: props}: Props) => {
           {props.direction === 'Pay Out' ? '-' : ''}${formattedAmount}
         </Text>
         <Text style={styles.datetimeTxt}>
-          {formatUnixTimestampToDateString(props.timestamp)}
+          {formatUnixTimestampToDateString(
+            props.timestamp as unknown as MillisecondTimestamp,
+          )}
         </Text>
       </View>
     </View>
