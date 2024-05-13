@@ -132,6 +132,12 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
+    resetStatus: state => {
+      state.status = 'idle';
+    },
+    resetScene: state => {
+      state.scene = undefined;
+    },
     resetOnProgressActivityListPage: state => {
       state.onProgressActivityListPage = 1;
     },
@@ -188,8 +194,12 @@ export const orderSlice = createSlice({
   },
 });
 
-export const {resetOnProgressActivityListPage, resetCompleteActivityListPage} =
-  orderSlice.actions;
+export const {
+  resetStatus,
+  resetScene,
+  resetOnProgressActivityListPage,
+  resetCompleteActivityListPage,
+} = orderSlice.actions;
 
 export const status = (state: RootState) => state.order.status;
 export const scene = (state: RootState) => state.order.scene;

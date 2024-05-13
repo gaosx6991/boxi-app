@@ -22,7 +22,13 @@ import Price from './Price.tsx';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigatorProps} from 'react-native-screens/lib/typescript/native-stack/types';
 import {useAppDispatch, useAppSelector} from '../../../hooks';
-import {createOrderAsync, scene, status} from '../../../store/Order.ts';
+import {
+  createOrderAsync,
+  resetScene,
+  resetStatus,
+  scene,
+  status,
+} from '../../../store/Order.ts';
 
 const shippingAssurancePercent = 0.03;
 
@@ -219,7 +225,7 @@ export default (props: Props) => {
 
   useEffect(() => {
     if (sceneValue === 'CreateOrder' && statusValue === 'success') {
-      navigation.navigate('OnProgressPickup', {
+      navigation.replace('OnProgressPickup', {
         senderInfo: {
           senderName,
           shipperPhoneNumber,
@@ -247,6 +253,13 @@ export default (props: Props) => {
   ]);
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetStatus());
+      dispatch(resetScene());
+    };
+  }, []);
 
   const handlePress = useCallback(() => {
     dispatch(
