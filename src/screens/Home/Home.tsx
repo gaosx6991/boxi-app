@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 // @ts-ignore
 import bell from '../../assets/bell.png';
 import Header from '../../components/Header.tsx';
@@ -14,6 +14,8 @@ import {
   resetScene as resetPromoScene,
   resetStatus as resetPromoStatus,
 } from '../../store/Promo.ts';
+import {ModalScreenRef} from '../../types';
+import Notification from '../Notification/Notification.tsx';
 
 export default () => {
   const dispatch = useAppDispatch();
@@ -27,10 +29,15 @@ export default () => {
     };
   }, []);
 
+  const notificationRef = useRef<ModalScreenRef>(null);
+  const handleRightButtonPress = useCallback(() => {
+    notificationRef.current?.show();
+  }, [notificationRef]);
+
   return (
     <Background>
       <Header
-        rightButtonPress={() => {}}
+        rightButtonPress={handleRightButtonPress}
         title={'Boxi'}
         rightButtonIcon={bell}
       />
@@ -42,6 +49,8 @@ export default () => {
           <Card />
         </Board>
       </Balance>
+
+      <Notification ref={notificationRef} />
     </Background>
   );
 };
