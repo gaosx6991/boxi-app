@@ -1,79 +1,109 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Boxi App
 
-# Getting Started
+Boxi is a React Native delivery service application that allows users to manage package deliveries, track orders, and handle payments.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Features
 
-## Step 1: Start the Metro Server
+- User authentication (email/phone number login)
+- Package delivery management
+- Real-time order tracking
+- Payment history
+- Profile management
+- Push notifications
+- Balance top-up functionality
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Prerequisites
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- Node.js (v14 or higher)
+- React Native development environment
+- Android Studio (for Android development)
+- Xcode (for iOS development)
+- yarn or npm
+
+## Installation
+
+1. Clone the repository:
 
 ```bash
-# using npm
-npm start
+git clone <repository-url>
+cd boxi-app
+```
 
-# OR using Yarn
+2. Install dependencies:
+
+```bash
+yarn install
+# or
+npm install
+```
+
+3. Set up environment variables:
+```bash
+cp .env.sample .env
+```
+Update the `API_URL` in `.env` file with your backend server URL.
+
+4. Start Metro bundler:
+```bash
 yarn start
+# or
+npm start
 ```
 
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
+5. Run the app:
 ```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
+# For iOS
+yarn ios
+# or
 npm run ios
 
-# OR using Yarn
-yarn ios
+# For Android
+yarn android
+# or
+npm run android
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Project Structure
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+```
+boxi-app/
+├── src/
+│   ├── apis/         # API integration
+│   ├── components/   # Reusable components
+│   ├── screens/      # Screen components
+│   ├── store/        # Redux store
+│   ├── hooks/        # Custom hooks
+│   ├── types/        # TypeScript types
+│   └── utils/        # Utility functions
+├── App.tsx           # Root component
+└── index.js          # Entry point
+```
 
-## Step 3: Modifying your App
+## Tech Stack
 
-Now that you have successfully run the app, let's modify it.
+- React Native
+- TypeScript
+- React Navigation
+- Redux & Redux Persist
+- React Native Document Picker
+- React Native Toast Message
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Development
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+- The project uses TypeScript for type safety
+- ESLint and Prettier are configured for code formatting
+- Jest is set up for testing
+- Metro bundler is configured for React Native
 
-## Congratulations! :tada:
+## Environment Variables
 
-You've successfully run and modified your React Native App. :partying_face:
+Required environment variables:
+- `API_URL`: Backend API URL (e.g., http://192.168.3.195:3000)
 
-### Now what?
+## Contributing
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
